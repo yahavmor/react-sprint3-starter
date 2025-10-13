@@ -6,13 +6,35 @@ var gFilterBy = { title: '' };
 
 export const noteService = {
 	query,
+	addNote,
 };
 
 function query() {
-	return Promise.resolve(notes);
+	return storageService.query(NOTE_KEY).then((notes) => {
+		//Todo: remove in future
+		if (!notes.length) return fakeNotes;
+
+		return notes;
+	});
 }
 
-const notes = [
+function addNote(type, info, isPinned, style) {
+	if (!info) throw new Error('Info not provided, failed to add note');
+
+	const note = {
+		type,
+		id: utilService.makeId(),
+		createdAt: Date.now(),
+		isPinned,
+		info,
+	};
+
+	if (style) note.style = style;
+
+	return storageService.post(NOTE_KEY, note);
+}
+
+const fakeNotes = [
 	{
 		id: 'n101',
 		createdAt: 1112222,
@@ -48,10 +70,12 @@ const notes = [
 			todos: [
 				{
 					txt: 'Drivinglicense',
+					id: 'n100',
 					doneAt: null,
 				},
 				{
 					txt: 'Coding power',
+					id: 'n101',
 					doneAt: 187111111,
 				},
 			],
