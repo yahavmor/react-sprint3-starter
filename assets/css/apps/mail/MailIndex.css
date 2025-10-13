@@ -1,1 +1,5 @@
- /* mail index  */
+.mail-index {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: auto;
+}
