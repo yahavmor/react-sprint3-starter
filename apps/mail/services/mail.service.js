@@ -6,116 +6,137 @@ const MAIL_KEY = 'mailDB'
 
 const mails_DB = [
   {
-    id: 'e102',
-    createdAt: 1551134930500,
-    subject: 'Meeting Reminder',
-    body: 'Don’t forget our meeting tomorrow at 10am.',
+    id: 'e201',
+    subject: 'Project Update',
+    body: 'The project is on track for delivery.',
+    from: 'manager@company.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 60 * 2, // 2 hours ago
     isRead: true,
-    sentAt: 1551134930594,
-    removedAt: null,
-    from: 'alice@work.com',
-    to: 'user@appsus.com'
+    isStared: true,
+    status: 'inbox',
+    txt: 'puki',
+    labels: ['work', 'urgent']
   },
   {
-    id: 'e103',
-    createdAt: 1551135930500,
-    subject: 'Party Invitation',
-    body: 'You’re invited to my birthday party this Saturday!',
+    id: 'e202',
+    subject: 'Vacation Request',
+    body: 'Can I take next Friday off?',
+    from: 'employee@company.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 1, // 1 day ago
     isRead: false,
-    sentAt: 1551135930594,
-    removedAt: null,
-    from: 'bob@friends.com',
-    to: 'user@appsus.com'
+    isStared: false,
+    status: 'inbox',
+    txt: 'puki',
+    labels: ['hr']
   },
   {
-    id: 'e104',
-    createdAt: 1551136930500,
-    subject: 'Newsletter - March',
-    body: 'Check out our latest updates and offers.',
-    isRead: true,
-    sentAt: 1551136930594,
-    removedAt: null,
-    from: 'news@company.com',
-    to: 'user@appsus.com'
-  },
-  {
-    id: 'e105',
-    createdAt: 1551137930500,
-    subject: 'Flight Confirmation',
-    body: 'Your flight to Paris has been confirmed.',
+    id: 'e203',
+    subject: 'Draft: New Campaign',
+    body: 'Ideas for the new marketing campaign.',
+    from: 'marketing@company.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 3, // 3 days ago
     isRead: false,
-    sentAt: 1551137930594,
-    removedAt: null,
-    from: 'travel@agency.com',
-    to: 'user@appsus.com'
+    isStared: true,
+    status: 'draft',
+    txt: 'puki',
+    labels: ['marketing', 'draft']
   },
   {
-    id: 'e106',
-    createdAt: 1551138930500,
-    subject: 'Job Opportunity',
-    body: 'We have a new position that matches your profile.',
-    isRead: false,
-    sentAt: 1551138930594,
-    removedAt: null,
-    from: 'hr@company.com',
-    to: 'user@appsus.com'
-  },
-  {
-    id: 'e107',
-    createdAt: 1551139930500,
-    subject: 'Recipe of the Week',
-    body: 'Try this delicious lasagna recipe!',
-    isRead: true,
-    sentAt: 1551139930594,
-    removedAt: null,
-    from: 'chef@cooking.com',
-    to: 'user@appsus.com'
-  },
-  {
-    id: 'e108',
-    createdAt: 1551140930500,
-    subject: 'Security Alert',
-    body: 'New login detected from unknown device.',
-    isRead: true,
-    sentAt: 1551140930594,
-    removedAt: null,
-    from: 'security@service.com',
-    to: 'user@appsus.com'
-  },
-  {
-    id: 'e109',
-    createdAt: 1551141930500,
-    subject: 'Weekend Plans?',
-    body: 'Want to go hiking this weekend?',
-    isRead: false,
-    sentAt: 1551141930594,
-    removedAt: null,
-    from: 'tom@friends.com',
-    to: 'user@appsus.com'
-  },
-  {
-    id: 'e110',
-    createdAt: 1551142930500,
-    subject: 'Invoice #4567',
-    body: 'Your invoice for March is attached.',
-    isRead: true,
-    sentAt: 1551142930594,
-    removedAt: null,
+    id: 'e204',
+    subject: 'Invoice Payment',
+    body: 'Your invoice has been paid.',
     from: 'billing@service.com',
-    to: 'user@appsus.com'
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 60 * 5, // 5 hours ago
+    isRead: true,
+    isStared: false,
+    status: 'sent',
+    txt: 'puki',
+    labels: ['finance']
   },
   {
-    id: 'e111',
-    createdAt: 1551143930500,
-    subject: 'Let’s catch up!',
-    body: 'Been a while—coffee next week?',
+    id: 'e205',
+    subject: 'Deleted Message',
+    body: 'This message was removed.',
+    from: 'noreply@system.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 7, // 1 week ago
+    isRead: true,
+    isStared: false,
+    status: 'trash',
+    txt: 'puki',
+    labels: ['system']
+  },
+  {
+    id: 'e206',
+    subject: 'Birthday Wishes',
+    body: 'Happy birthday! 🎉',
+    from: 'friend@social.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 30, // 30 minutes ago
     isRead: false,
-    sentAt: 1551143930594,
-    removedAt: null,
-    from: 'lisa@oldfriends.com',
-    to: 'user@appsus.com'
+    isStared: true,
+    status: 'inbox',
+    txt: 'puki',
+    labels: ['personal']
+  },
+  {
+    id: 'e207',
+    subject: 'Weekly Newsletter',
+    body: 'Here are your weekly updates.',
+    from: 'newsletter@updates.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 60 * 12, // 12 hours ago
+    isRead: true,
+    isStared: false,
+    status: 'inbox',
+    txt: 'puki',
+    labels: ['news']
+  },
+  {
+    id: 'e208',
+    subject: 'Flight Reminder',
+    body: 'Your flight to Rome is tomorrow.',
+    from: 'travel@agency.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 60 * 36, // 1.5 days ago
+    isRead: false,
+    isStared: true,
+    status: 'inbox',
+    txt: 'puki',
+    labels: ['travel']
+  },
+  {
+    id: 'e209',
+    subject: 'System Alert',
+    body: 'Unusual login detected.',
+    from: 'security@service.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 60 * 72, // 3 days ago
+    isRead: true,
+    isStared: false,
+    status: 'inbox',
+    txt: 'puki',
+    labels: ['security']
+  },
+  {
+    id: 'e210',
+    subject: 'Draft: Shopping List',
+    body: 'Milk, eggs, bread...',
+    from: 'user@appsus.com',
+    to: 'user@appsus.com',
+    sentAt: Date.now() - 1000 * 60 * 10, // 10 minutes ago
+    isRead: false,
+    isStared: false,
+    status: 'draft',
+    txt: 'puki',
+    labels: ['personal', 'shopping']
   }
 ]
+
 
 _createMails()
 
@@ -124,31 +145,55 @@ function _createMails(){
         if (!mails || !mails.length) utilService.saveToStorage(MAIL_KEY,mails_DB)
 }
 
-
-
-
-
 function query(filterBy = {}) {
-    // return storageService.query(MAIL_DB)
-    //     .then(mails => {
-    //         if (filterBy.title) {
-    //             const regex = new RegExp(filterBy.title, 'i')
-    //             books = books.filter(book => regex.test(book.title))
-    //         }
-    //         if (filterBy.listPrice) {
-    //              books = books.filter(book => book.listPrice.amount >= filterBy.listPrice)
-    //         }
-    //         if (filterBy.pageCount) {
-    //              books = books.filter(book => book.pageCount >= filterBy.pageCount)
-    //         }
-    //         if (filterBy.isOnSale) {
-    //              books = books.filter(book => book.listPrice.isOnSale === true)
-    //         }
-    //         return books
-    //     })
-        return storageService.query(MAIL_KEY)
+    return storageService.query(MAIL_KEY)
+        .then(mails => {
+            if (filterBy.txt) {
+                const regex = new RegExp(filterBy.txt, 'i')
+                mails = mails.filter(mail => regex.test(mail.subject) || regex.test(mail.body))
+            }
+            if (filterBy.isRead) {
+                mails = mails.filter(mail => mail.isRead === filterBy.isRead)
+            }
+            if (filterBy.status) {
+                mails = mails.filter(mail => mail.status === filterBy.status)
+            }
+            return mails
+        })
 }
+
 export const MailService = {
     mails_DB ,
-    query
+    query,
+    getNextPrevMailId,
+    get,
+    getFilterFromSearchParams
+}
+
+
+function getNextPrevMailId(mailId) {
+    return query()
+        .then(mails => {
+            const mailIdx = mails.findIndex(mail => mail.id === mailId)
+            const prevMail = mails[mailIdx - 1] || mails[mails.length - 1]
+            const nextMail = mails[mailIdx + 1] || mails[0]
+            return get(mailId).then(mail => {
+                mail.prevMail = prevMail
+                mail.nextMail = nextMail
+                return mail
+            })
+        })
+}
+function get(mailId) {
+    return storageService.get(MAIL_KEY, mailId)
+}
+function getFilterFromSearchParams(searchParams) {
+    const status = searchParams.get('status') || ''
+    const text = searchParams.get('text') || ''
+    const isRead = searchParams.get('isRead') || ''
+    return {
+        status,
+        text,
+        isRead
+    }
 }

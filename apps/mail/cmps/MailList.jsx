@@ -1,20 +1,28 @@
 import { MailPreview } from "./MailPreview.jsx"
-const { Link } = ReactRouterDOM
-
+const { Link  , useNavigate } = ReactRouterDOM
 
 export function MailList({mails}) {
+    const navigate = useNavigate()
+
+
+        if (!mails.length) {
+            return (
+                <div className="no-mails-msg">
+                    No mails were found...
+                </div>
+            )
+        }
     return(
-        <ul className="mail-list container">
-            {mails.map(mail =>
-                <li key={mail.id}>
-                    <MailPreview mail={mail} />
-                    {/* <section>
-                        <button onClick={ev => onRemoveBook(book.id, ev)}>Remove</button>
-                        <button><Link to={`/book/${book.id}`}>Details</Link></button>
-                        <button><Link to={`/book/edit/${book.id}`}>Edit</Link></button>
-                    </section> */}
-                </li>
-            )}
-        </ul>
+    <ul className="mail-list container">
+        {mails.map(mail => (
+            <li key={mail.id} onClick={() => navigate(`/mail/${mail.id}`)}>
+            <MailPreview mail={mail} />
+            </li>
+        ))}
+    </ul>
     )  
 }
+
+
+
+

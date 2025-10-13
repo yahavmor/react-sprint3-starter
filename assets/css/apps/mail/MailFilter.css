@@ -1,0 +1,58 @@
+.mail-filter-container {
+    padding: 1rem;
+    background-color: #f4f6f8;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 1rem auto;
+}
+
+.mail-filter-container form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* כל שדה עטוף בקבוצת div */
+.mail-filter-container form > div {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 200px;
+}
+
+.mail-filter-container label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.3rem;
+}
+
+.mail-filter-container input[type="text"],
+.mail-filter-container input[type="checkbox"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+.mail-filter-container input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-top: 0.3rem;
+}
+
+.mail-filter-container button {
+    padding: 0.6rem 1rem;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+@media (max-width: 600px) {
+   
+}
