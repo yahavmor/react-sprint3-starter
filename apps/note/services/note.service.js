@@ -6,6 +6,7 @@ var gFilterBy = { title: '' };
 
 export const noteService = {
 	query,
+	remove,
 	addNote,
 };
 
@@ -32,6 +33,10 @@ function addNote(type, info, isPinned, style) {
 	if (style) note.style = style;
 
 	return storageService.post(NOTE_KEY, note);
+}
+
+function remove(noteId) {
+	return storageService.remove(NOTE_KEY, noteId);
 }
 
 const fakeNotes = [
