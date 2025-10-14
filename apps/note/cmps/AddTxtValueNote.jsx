@@ -1,4 +1,5 @@
-export function AddTxtValueNote({ onSubmit }) {
+export function AddTxtValueNote({ onSubmit, noteType }) {
+	console.log(onSubmit);
 	function add() {
 		const element = document.getElementById('txtValueForNote');
 		onSubmit(element.value);
@@ -6,8 +7,14 @@ export function AddTxtValueNote({ onSubmit }) {
 
 	return (
 		<div>
-			<input id="txtValueForNote" type="text" />
-			<button onClick={add}>add</button>
+			<button onClick={add}>Add Note</button>
+			<input
+				id="txtValueForNote"
+				placeholder={
+					noteType === 'NoteTxt' ? 'What is on your mind...' : 'Place URL'
+				}
+				type="text"
+			/>
 		</div>
 	);
 }

@@ -1,4 +1,4 @@
-export function NoteTodos({ note, onRemoveTodo }) {
+export function NoteTodos({ note }) {
 	return (
 		<div>
 			<h2>{note.info.title}</h2>
