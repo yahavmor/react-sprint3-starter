@@ -1,5 +1,5 @@
 export function MailPreview({ mail }) {
-    const { subject, from, sentAt ,isRead} = mail
+    const { subject, from, sentAt, isRead } = mail
 
     function getTimeAgo(sentAt) {
         const now = Date.now()
@@ -14,12 +14,14 @@ export function MailPreview({ mail }) {
     }
 
     const timeAgo = getTimeAgo(sentAt)
-    const readStyle = isRead ? { backgroundColor: '#f0f0f0', color: '#888' } : { backgroundColor: '#4d3f3fff', color: '#000' }
+    const previewClass = `mail-preview ${isRead ? 'read' : 'unread'}`
+
     return (
-        <article className="mail-preview" style={readStyle}>
+        <article className={previewClass}>
             <h4 className="mail-from">{from}</h4>
             <h4 className="mail-subject">{subject}</h4>
-            <h4 className="mail-time">Sent {timeAgo}</h4>
+            <h4 className="mail-time">{timeAgo}</h4>
         </article>
     )
+
 }

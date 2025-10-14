@@ -1,7 +1,6 @@
 import { storageService } from "../../../services/async-storage.service.js"
 import { utilService } from "../../../services/util.service.js"
 
-
 const MAIL_KEY = 'mailDB'
 
 const mails_DB = [
@@ -137,7 +136,6 @@ const mails_DB = [
   }
 ]
 
-
 _createMails()
 
 function _createMails(){
@@ -167,7 +165,11 @@ export const MailService = {
     query,
     getNextPrevMailId,
     get,
-    getFilterFromSearchParams
+    getFilterFromSearchParams,
+    remove
+}
+function remove(mailId) {
+    return storageService.remove(MAIL_KEY, mailId)
 }
 
 

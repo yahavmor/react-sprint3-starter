@@ -4,7 +4,6 @@ const { Link  , useNavigate } = ReactRouterDOM
 export function MailList({mails}) {
     const navigate = useNavigate()
 
-
         if (!mails.length) {
             return (
                 <div className="no-mails-msg">
@@ -15,9 +14,12 @@ export function MailList({mails}) {
     return(
     <ul className="mail-list container">
         {mails.map(mail => (
-            <li key={mail.id} onClick={() => navigate(`/mail/${mail.id}`)}>
-            <MailPreview mail={mail} />
+            <li key={mail.id}>
+                <Link to={`/mail/${mail.id}`}>
+                    <MailPreview mail={mail} />
+                </Link>
             </li>
+
         ))}
     </ul>
     )  

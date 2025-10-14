@@ -7,7 +7,8 @@ export const utilService = {
     getDayName,
     getMonthName,
     loadFromStorage,
-    saveToStorage
+    saveToStorage,
+    cleanObject
 }
 
 function saveToStorage(key, val) {
@@ -71,3 +72,13 @@ function getMonthName(date) {
     ]
     return monthNames[date.getMonth()]
 }
+function cleanObject(obj) {
+    const newObj = {}
+    for (const key in obj) {
+        const value = obj[key]
+        if (value) {
+            newObj[key] = value
+        }
+    }
+    return newObj
+}    

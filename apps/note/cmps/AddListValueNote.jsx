@@ -1,4 +1,4 @@
-import { utilService } from '../../../services/util.service.jsx';
+import { utilService } from '../../../services/util.service.js';
 import { NoteTodos } from './NoteTodos.jsx';
 
 const { useState, useEffect } = React;
