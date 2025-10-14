@@ -4,7 +4,7 @@ import { NoteTodos } from './NoteTodos.jsx';
 const { useState, useEffect } = React;
 let taskCount = 0;
 
-export function AddListValueNote({ onSubmit }) {
+export function AddListValueNote({ onSubmit, onRemoveTodo }) {
 	const [toDo, setToDo] = useState([]);
 
 	function handleAddTasktoTodos() {
@@ -38,9 +38,9 @@ export function AddListValueNote({ onSubmit }) {
 
 	return (
 		<div>
+			<button onClick={add}>Add Note</button>
 			<input id="listValueForNote" type="text" placeholder="Add your task..." />
 			<button onClick={handleAddTasktoTodos}> + </button>
-			<button onClick={add}>add</button>
 		</div>
 	);
 }

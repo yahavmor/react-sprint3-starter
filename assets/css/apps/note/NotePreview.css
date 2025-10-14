@@ -1,6 +1,42 @@
 .note-preview {
-	border: 1px solid black;
+	position: relative;
+
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 	min-height: 200px;
 	min-width: 300px;
 	margin: 15px;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.delete-btn {
+	position: absolute;
+	bottom: 3px;
+	right: 3px;
+	padding: 4px;
+	background: none;
+	border: none;
+}
+
+.NoteTxt {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: start;
+}
+
+.material-symbols-outlined {
+	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.color-choice {
+	position: absolute;
+	background: none;
+	border: none;
+	bottom: 2px;
+	width: auto;
+}
+
+input[name='clr'] {
+	opacity: 0;
+	width: 1px;
 }

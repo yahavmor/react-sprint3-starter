@@ -31,6 +31,12 @@ export function NoteIndex() {
 		});
 	}
 
+	function onSetNoteStyle(updatedNote) {
+		setNotes((prevNotes) =>
+			prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
+		);
+	}
+
 	// console.log('render')
 	if (!notes) return <div className="loading-container">Loading...</div>;
 	console.log(notes);
@@ -39,7 +45,12 @@ export function NoteIndex() {
 			<AddNote onAddNote={onAddNote} />
 			<div className="notes-index">
 				{notes.map((note) => (
-					<NotePreview key={note.id} note={note} onRemoveNote={onRemoveNote} />
+					<NotePreview
+						key={note.id}
+						note={note}
+						onRemoveNote={onRemoveNote}
+						onSetNoteStyle={onSetNoteStyle}
+					/>
 				))}
 			</div>
 		</section>
