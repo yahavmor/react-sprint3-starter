@@ -29,7 +29,7 @@ export function NotePreview({ note, onRemoveNote, onSetNoteStyle }) {
 
 	return (
 		<div className={`note-preview ${note.type}`} style={note.style}>
-			<NoteComponent note={note} />
+			<NoteComponent note={note} onRemoveNote={onRemoveNote} />
 			<button
 				className="delete-btn material-symbols-outlined"
 				onClick={() => onRemoveNote(note.id)}

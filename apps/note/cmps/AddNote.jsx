@@ -1,6 +1,5 @@
 import { AddTxtValueNote } from './AddTxtValueNote.jsx';
 import { AddListValueNote } from './AddListValueNote.jsx';
-import { noteService } from '../services/note.service.js';
 
 const cmpMap = {
 	NoteTxt: AddTxtValueNote,
@@ -8,50 +7,36 @@ const cmpMap = {
 	NoteTodos: AddListValueNote,
 };
 
-const { useState, useEffect } = React;
+const { useState } = React;
 
 export function AddNote({ onAddNote }) {
 	const [noteType, setNoteType] = useState('NoteTxt');
 
 	let AddNoteComponent = cmpMap[noteType];
-
 	if (!AddNoteComponent) AddNoteComponent = AddTxtValueNote;
 
-	function addNewNote(value) {
+	function handleSubmit(value) {
 		let info;
-
-		// this if esle is bothering me but not sure how to change it to switch
-		if (noteType === 'NoteTodos') {
-			info = { todos: value };
-			noteService
-				.addNote(noteType, info, false)
-				.then((note) => onAddNote(note))
-				.catch((err) => console.error('Error adding NoteTodos:', err));
-		} else {
-			switch (noteType) {
-				case 'NoteTxt':
-					info = { txt: value };
-					break;
-
-				case 'NoteImg':
-					info = { url: value };
-					break;
-				default:
-					console.error('Unknown noteType');
-					return;
-			}
-			noteService
-				.addNote(noteType, info, false)
-				.then((note) => onAddNote(note))
-				.catch((err) => console.error('Error adding Note:', err));
+		switch (noteType) {
+			case 'NoteTodos':
+				info = { todos: value };
+				break;
+			case 'NoteTxt':
+				info = { txt: value };
+				break;
+			case 'NoteImg':
+				info = { url: value };
+				break;
+			default:
+				console.error('Unknown noteType');
+				return;
 		}
+		onAddNote(noteType, info);
 	}
-
-	console.log(noteType);
 
 	return (
 		<div className="input-container">
-			<AddNoteComponent onSubmit={addNewNote} noteType={noteType} />
+			<AddNoteComponent onSubmit={handleSubmit} noteType={noteType} />
 			<button
 				className="noteType-btn material-symbols-outlined"
 				onClick={() => setNoteType('NoteTxt')}

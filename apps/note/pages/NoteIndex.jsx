@@ -19,23 +19,43 @@ export function NoteIndex() {
 			.catch((err) => console.log('err:', err));
 	}
 
-	function onAddNote(note) {
-		setNotes([...notes, note]);
+	function onAddNote(noteType, info) {
+		noteService
+			.createNote(noteType, info, false)
+			.then((newNote) => {
+				setNotes((prevNotes) => [...prevNotes, newNote]);
+				showSuccessMsg('Note added!');
+			})
+			.catch((err) => {
+				console.error('Error adding Note:', err);
+			});
 	}
 
 	function onRemoveNote(noteId) {
 		console.log('Removing note with id:', noteId);
-		noteService.remove(noteId).then(() => {
-			setNotes((notes) => notes.filter((note) => note.id !== noteId));
-			showSuccessMsg('Note has been successfully removed!');
-		});
+		noteService
+			.remove(noteId)
+			.then(() => {
+				setNotes((notes) => notes.filter((note) => note.id !== noteId));
+				showSuccessMsg('Note has been successfully removed!');
+			})
+			.catch((err) => {
+				console.error('Error removing Note:', err);
+			});
 	}
 
 	function onSetNoteStyle(updatedNote) {
-		setNotes((prevNotes) =>
-			prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
-		);
+		noteService
+			.put(updatedNote)
+			.then((savedNote) => {
+				setNotes((prevNotes) =>
+					prevNotes.map((note) => (note.id === savedNote.id ? savedNote : note))
+				);
+			})
+			.catch((err) => console.error('Error updating note color:', err));
 	}
+
+	function onUpdateNote(noteToUpdate) {}
 
 	// console.log('render')
 	if (!notes) return <div className="loading-container">Loading...</div>;

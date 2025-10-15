@@ -1,14 +1,15 @@
 import { utilService } from '../../../services/util.service.js';
 import { NoteTodos } from './NoteTodos.jsx';
 
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 let taskCount = 0;
 
 export function AddListValueNote({ onSubmit, onRemoveTodo }) {
 	const [toDo, setToDo] = useState([]);
+	const inputListValueNote = useRef(null);
 
 	function handleAddTasktoTodos() {
-		const taskTxt = document.getElementById('listValueForNote').value;
+		const taskTxt = inputListValueNote.current.value;
 
 		if (taskTxt) {
 			const newTask = {
@@ -18,10 +19,9 @@ export function AddListValueNote({ onSubmit, onRemoveTodo }) {
 			};
 			//console.log(newTask);
 			setToDo((prevTasks) => [...prevTasks, newTask]);
-			document.getElementById('listValueForNote').value = '';
+			inputListValueNote.current.value = '';
 		}
 	}
-	//console.log(toDo);
 
 	// dont know how to transfer it to the NoteTodos
 	function onRemoveTodo(toDoId) {
@@ -33,13 +33,17 @@ export function AddListValueNote({ onSubmit, onRemoveTodo }) {
 	}
 
 	function add() {
-		onSubmit(toDo, onRemoveTodo);
+		onSubmit(toDo);
 	}
 
 	return (
 		<div>
 			<button onClick={add}>Add Note</button>
-			<input id="listValueForNote" type="text" placeholder="Add your task..." />
+			<input
+				ref={inputListValueNote}
+				type="text"
+				placeholder="Add your task..."
+			/>
 			<button onClick={handleAddTasktoTodos}> + </button>
 		</div>
 	);
