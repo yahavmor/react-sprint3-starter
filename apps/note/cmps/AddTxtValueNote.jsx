@@ -1,15 +1,20 @@
 export function AddTxtValueNote({ onSubmit, noteType }) {
-	console.log(onSubmit);
+	//console.log(onSubmit);
+	const { useRef } = React;
+	const inputTxtValueNote = useRef(null);
+
 	function add() {
-		const element = document.getElementById('txtValueForNote');
-		onSubmit(element.value);
+		const value = inputTxtValueNote.current.value;
+		if (!value) return;
+		onSubmit(value);
+		inputTxtValueNote.current.value = '';
 	}
 
 	return (
 		<div>
 			<button onClick={add}>Add Note</button>
 			<input
-				id="txtValueForNote"
+				ref={inputTxtValueNote}
 				placeholder={
 					noteType === 'NoteTxt' ? 'What is on your mind...' : 'Place URL'
 				}
