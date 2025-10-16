@@ -15,7 +15,6 @@
     justify-content: space-between;
 }
 
-/* כל שדה עטוף בקבוצת div */
 .mail-filter-container form > div {
     display: flex;
     flex-direction: column;
@@ -53,6 +52,10 @@
     transition: background-color 0.2s ease;
 }
 
+.mail-filter {
+    margin-bottom: 1rem;
+}
 @media (max-width: 600px) {
    
 }
+

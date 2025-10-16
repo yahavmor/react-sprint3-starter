@@ -1,6 +1,6 @@
-export function MailPreview({ mail }) {
-    const { subject, from, sentAt, isRead } = mail
 
+export function MailPreview({ mail, onRemoveMail }) {
+    const { id, subject, from, sentAt, isRead, status } = mail
     function getTimeAgo(sentAt) {
         const now = Date.now()
         const diffMs = now - sentAt
@@ -15,13 +15,26 @@ export function MailPreview({ mail }) {
 
     const timeAgo = getTimeAgo(sentAt)
     const previewClass = `mail-preview ${isRead ? 'read' : 'unread'}`
+    const deleteTxt = status === 'trash' ? 'Delete forever' : 'Delete'
 
     return (
         <article className={previewClass}>
-            <h4 className="mail-from">{from}</h4>
-            <h4 className="mail-subject">{subject}</h4>
-            <h4 className="mail-time">{timeAgo}</h4>
+            <div className="mail-checkbox">
+                <input type="checkbox" />
+            </div>
+            <div className="mail-star">☆</div>
+            <div className="mail-from">{from}</div>
+            <div className="mail-subject">{subject}</div>
+            <div className="mail-time">{timeAgo}</div>
+            <button
+                className="btn-remove"
+                onClick={(ev) => {
+                    ev.stopPropagation()
+                    onRemoveMail(id)
+                }}
+            >
+                🗑 {deleteTxt}
+            </button>
         </article>
     )
-
 }

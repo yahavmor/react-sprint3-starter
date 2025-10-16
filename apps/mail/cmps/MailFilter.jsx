@@ -35,19 +35,7 @@ export function MailFilter({defaultFilter , onSetFilterBy}){
 return (
         <section className="mail-filter-container">
             <form onSubmit={onSubmitFilter}>
-                <div>
-                    <label>Status</label>
-                    <input onChange={handleChange} value={status} name="status" type="text" />
-                </div>
-                <div>
-                    <label>Text</label>
-                    <input onChange={handleChange} value={txt} name="txt" type="text" />
-                </div>
-                <div>
-                    <label>Read</label>
-                    <input onChange={handleChange} checked={isRead} name="isRead" type="checkbox" />
-                </div>
-                <button>Submit</button>
+                    <input onChange={handleChange} value={txt} name="txt" type="text" placeholder="Search in Email" />
             </form>
         </section>
     )

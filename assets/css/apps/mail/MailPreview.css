@@ -1,43 +1,82 @@
-
 .mail-preview {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 40px 40px 1fr 2fr 100px 40px;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.95rem;
+    background-color: #fff;
+    position: relative;
+}
+
+.mail-preview.unread {
+    background-color: #eaf1fb;
+    font-weight: bold;
+    color: #202124;
+}
+
+.mail-preview:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    z-index: 1;
+}
+
+
+.mail-preview:hover .mail-time {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mail-time {
+    text-align: right;
+    color: #70757a;
+    font-size: 0.85rem;
+    transition: opacity 0.2s ease;
+}
+
+.mail-preview .btn-remove {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    background: none;
+    border: none;
+    color: #d93025;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.mail-preview:hover .btn-remove {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mail-preview .btn-remove:hover {
+    transform: scale(1.2);
+    color: #a50e0e;
+}
+
+.mail-checkbox input {
+    cursor: pointer;
+}
+
+.mail-star {
+    color: #fbbc04;
+    font-size: 1.2rem;
+    cursor: pointer;
 }
 
 .mail-from {
-    flex: 1;
-    font-weight: 500;
-    color: #333;
-}
-
-.mail-subject {
-    flex: 2;
-    color: #555;
-    padding: 0 1rem;
+    color: #202124;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.mail-time {
-    flex: 1;
-    text-align: right;
-    font-size: 0.9rem;
-    color: #999;
+.mail-subject {
+    color: #5f6368;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
-.unread {
-    background-color: #20148d28; 
-    font-weight: bold;
-    color: black;
-    font-size: 20px;
-}
-
-.read {
-    background-color: #fff;
-    font-weight: normal;
-    color: #999;
-    font-size: 15px;
-}
-

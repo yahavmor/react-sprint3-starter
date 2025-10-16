@@ -1,0 +1,19 @@
+.folders-list nav a {
+    display: block;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: #333;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.folders-list nav a:hover {
+    background-color: #e0e0e0;
+}
+
+.folders-list nav a.active-folder {
+    background-color: #d2e3fc;
+    font-weight: bold;
+    color: #1a73e8;
+}

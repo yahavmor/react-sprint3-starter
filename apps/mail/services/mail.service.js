@@ -10,8 +10,8 @@ const mails_DB = [
     body: 'The project is on track for delivery.',
     from: 'manager@company.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 2, // 2 hours ago
-    isRead: true,
+    sentAt: Date.now() - 1000 * 60 * 60 * 2, 
+    isRead: false,
     isStared: true,
     status: 'inbox',
     txt: 'puki',
@@ -23,7 +23,7 @@ const mails_DB = [
     body: 'Can I take next Friday off?',
     from: 'employee@company.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 1, // 1 day ago
+    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 1, 
     isRead: false,
     isStared: false,
     status: 'inbox',
@@ -36,10 +36,10 @@ const mails_DB = [
     body: 'Ideas for the new marketing campaign.',
     from: 'marketing@company.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 3, // 3 days ago
+    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 3, 
     isRead: false,
     isStared: true,
-    status: 'draft',
+    status: 'inbox',
     txt: 'puki',
     labels: ['marketing', 'draft']
   },
@@ -49,10 +49,10 @@ const mails_DB = [
     body: 'Your invoice has been paid.',
     from: 'billing@service.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 5, // 5 hours ago
-    isRead: true,
+    sentAt: Date.now() - 1000 * 60 * 60 * 5,
+    isRead: false,
     isStared: false,
-    status: 'sent',
+    status: 'inbox',
     txt: 'puki',
     labels: ['finance']
   },
@@ -62,10 +62,10 @@ const mails_DB = [
     body: 'This message was removed.',
     from: 'noreply@system.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 7, // 1 week ago
-    isRead: true,
+    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 7, 
     isStared: false,
-    status: 'trash',
+    isRead: false,
+    status: 'inbox',
     txt: 'puki',
     labels: ['system']
   },
@@ -75,7 +75,7 @@ const mails_DB = [
     body: 'Happy birthday! 🎉',
     from: 'friend@social.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 30, // 30 minutes ago
+    sentAt: Date.now() - 1000 * 60 * 30, 
     isRead: false,
     isStared: true,
     status: 'inbox',
@@ -88,8 +88,8 @@ const mails_DB = [
     body: 'Here are your weekly updates.',
     from: 'newsletter@updates.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 12, // 12 hours ago
-    isRead: true,
+    sentAt: Date.now() - 1000 * 60 * 60 * 12, 
+    isRead: false,
     isStared: false,
     status: 'inbox',
     txt: 'puki',
@@ -101,7 +101,7 @@ const mails_DB = [
     body: 'Your flight to Rome is tomorrow.',
     from: 'travel@agency.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 36, // 1.5 days ago
+    sentAt: Date.now() - 1000 * 60 * 60 * 36, 
     isRead: false,
     isStared: true,
     status: 'inbox',
@@ -114,8 +114,8 @@ const mails_DB = [
     body: 'Unusual login detected.',
     from: 'security@service.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 72, // 3 days ago
-    isRead: true,
+    sentAt: Date.now() - 1000 * 60 * 60 * 72, 
+    isRead: false,
     isStared: false,
     status: 'inbox',
     txt: 'puki',
@@ -127,15 +127,24 @@ const mails_DB = [
     body: 'Milk, eggs, bread...',
     from: 'user@appsus.com',
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 10, // 10 minutes ago
+    sentAt: Date.now() - 1000 * 60 * 10, 
     isRead: false,
     isStared: false,
-    status: 'draft',
+    status: 'inbox',
     txt: 'puki',
     labels: ['personal', 'shopping']
   }
 ]
-
+export const MailService = {
+    mails_DB ,
+    query,
+    getNextPrevMailId,
+    get,
+    getFilterFromSearchParams,
+    remove,
+    send,
+    save
+}
 _createMails()
 
 function _createMails(){
@@ -144,30 +153,17 @@ function _createMails(){
 }
 
 function query(filterBy = {}) {
-    return storageService.query(MAIL_KEY)
-        .then(mails => {
-            if (filterBy.txt) {
-                const regex = new RegExp(filterBy.txt, 'i')
-                mails = mails.filter(mail => regex.test(mail.subject) || regex.test(mail.body))
-            }
-            if (filterBy.isRead) {
-                mails = mails.filter(mail => mail.isRead === filterBy.isRead)
-            }
-            if (filterBy.status) {
-                mails = mails.filter(mail => mail.status === filterBy.status)
-            }
-            return mails
-        })
+    return storageService.query(MAIL_KEY).then(mails => {
+        if (filterBy.status) {
+            return mails.filter(mail => mail.status === filterBy.status)
+        }
+        return mails
+    })
 }
 
-export const MailService = {
-    mails_DB ,
-    query,
-    getNextPrevMailId,
-    get,
-    getFilterFromSearchParams,
-    remove
-}
+
+
+
 function remove(mailId) {
     return storageService.remove(MAIL_KEY, mailId)
 }
@@ -199,3 +195,22 @@ function getFilterFromSearchParams(searchParams) {
         isRead
     }
 }
+function send(mail) {
+    const newMail = {
+        id: utilService.makeId(),
+        from: mail.from,
+        to: mail.to,
+        subject: mail.subject,
+        body: mail.body,
+        sentAt: Date.now(),
+        isRead: false,
+        status: mail.status || 'sent'
+    }
+
+    return storageService.post(MAIL_KEY, newMail)
+}
+
+function save(mail) {
+    return storageService.put(MAIL_KEY, mail)
+}
+
