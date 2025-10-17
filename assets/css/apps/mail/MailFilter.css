@@ -1,61 +1,40 @@
 .mail-filter-container {
-    padding: 1rem;
-    background-color: #f4f6f8;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    max-width: 800px;
-    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    padding: 0.5em 1em;
 }
 
 .mail-filter-container form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
+    position: absolute;
+    right: 44%;
+    width: 100%;
+    max-width: 500px;
 }
 
-.mail-filter-container form > div {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 200px;
-}
-
-.mail-filter-container label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.3rem;
-}
-
-.mail-filter-container input[type="text"],
-.mail-filter-container input[type="checkbox"] {
-    padding: 0.5rem;
+.mail-filter-container input[type="text"] {
+    width: 100%;
+    padding: 0.6em 2.5em 0.6em 1em;
     border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    background-color: #fff;
+    border-radius: 24px;
+    font-size: 1em;
+    background-color: #f1f3f4;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    transition: box-shadow 0.2s ease;
 }
 
-.mail-filter-container input[type="checkbox"] {
-    transform: scale(1.2);
-    margin-top: 0.3rem;
+.mail-filter-container input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #c2dbff;
 }
 
-.mail-filter-container button {
-    padding: 0.6rem 1rem;
-    background-color: #0077cc;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+.mail-filter-container .search-icon {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5f6368;
+    font-size: 1em;
+    pointer-events: none;
 }
-
-.mail-filter {
-    margin-bottom: 1rem;
-}
-@media (max-width: 600px) {
-   
-}
-

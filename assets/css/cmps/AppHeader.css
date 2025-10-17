@@ -1,57 +1,96 @@
 .app-header {
+    position: relative;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1.5rem;
-    background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    align-items: center;
+    padding: 0.5em 1em;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    z-index: 1000;
 }
+
 
 .left-section {
     display: flex;
     align-items: center;
-    gap: 1rem;
-}
-
-.logo {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #1a73e8;
-    cursor: pointer;
+    gap: 1em;
+    flex-grow: 1;
 }
 
 .menu-toggle {
     background: none;
     border: none;
-    font-size: 1.2rem;
+    cursor: pointer;
+    font-size: 1.2em;
     color: #5f6368;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    background: none;
+    border: none;
     cursor: pointer;
 }
 
-.center-section {
-    flex: 1;
-    margin: 0 2rem;
+.logo img {
+    width: 24px;
+    height: 24px;
+}
+
+.logo-text {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #202124;
+}
+
+.mail-filter-container {
+    margin-left: 1em;
+}
+
+.mail-filter-container form {
+    position: relative;
+    width: 300px;
+}
+
+.mail-filter-container input[type="text"] {
+    width: 100%;
+    padding: 0.6em 2.5em 0.6em 1em;
+    border: none;
+    border-radius: 24px;
+    font-size: 1em;
+    background-color: #f1f3f4;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.mail-filter-container input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #c2dbff;
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5f6368;
+    font-size: 1em;
+    pointer-events: none;
 }
 
 .right-section {
     display: flex;
-    gap: 1rem;
+    gap: 1em;
 }
 
 .right-section a {
     text-decoration: none;
-    color: #202124;
+    color: #5f6368;
     font-weight: 500;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
+    font-size: 0.95em;
 }
 
-.right-section a:hover {
-    background-color: #f1f3f4;
+.right-section a.active {
+    color: #1a73e8;
 }

@@ -1,34 +1,61 @@
-import { MailFilter } from "../apps/mail/cmps/MailFilter.jsx"
-import '@fortawesome/fontawesome-free/css/all.min.css'
-
-const { NavLink, useNavigate, useLocation } = ReactRouterDOM
+const { useNavigate, NavLink, useLocation, useSearchParams } = ReactRouterDOM
 
 export function AppHeader() {
     const navigate = useNavigate()
     const location = useLocation()
-
+    const [searchParams, setSearchParams] = useSearchParams()
     const isMailRoute = location.pathname.startsWith('/mail')
 
     function goHome() {
         navigate('/mail')
     }
 
+    function toggleMenu() {
+        const toggleEvent = new CustomEvent('toggleMenu')
+        window.dispatchEvent(toggleEvent)
+    }
+
+    function onFilterChange(txt) {
+        // 👇 עדכון ה־URL עם מילת החיפוש
+        const updatedParams = new URLSearchParams(searchParams)
+        updatedParams.set('txt', txt)
+        setSearchParams(updatedParams)
+
+        // 👇 שליחת אירוע לפילטר
+        const filterEvent = new CustomEvent('setMailFilter', {
+            detail: { txt }
+        })
+        window.dispatchEvent(filterEvent)
+    }
+
     return (
         <header className="app-header">
             <div className="left-section">
-                <button className="logo" onClick={goHome}>
-                    <i className="fa-regular fa-envelope"></i>
-                </button>
-
                 {isMailRoute && (
-                    <button className="menu-toggle" onClick={() => {
-                        const toggleEvent = new CustomEvent('toggleMenu')
-                        window.dispatchEvent(toggleEvent)
-                    }}>
+                    <button className="menu-toggle" onClick={toggleMenu}>
                         <i className="fa-solid fa-bars"></i>
                     </button>
                 )}
+                <button className="logo" onClick={goHome}>
+                    <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail Logo" />
+                    <span className="logo-text">Gmail</span>
+                </button>
+
+                {isMailRoute && (
+                    <section className="mail-filter-container">
+                        <form onSubmit={ev => ev.preventDefault()}>
+                            <input
+                                type="text"
+                                name="txt"
+                                placeholder="Search mail"
+                                onChange={ev => onFilterChange(ev.target.value)}
+                            />
+                            <i className="fa-solid fa-magnifying-glass search-icon"></i>
+                        </form>
+                    </section>
+                )}
             </div>
+
             <nav className="right-section">
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/about">About</NavLink>

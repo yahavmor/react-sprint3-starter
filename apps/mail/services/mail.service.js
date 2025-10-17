@@ -3,138 +3,54 @@ import { utilService } from "../../../services/util.service.js"
 
 const MAIL_KEY = 'mailDB'
 
-const mails_DB = [
-  {
-    id: 'e201',
-    subject: 'Project Update',
-    body: 'The project is on track for delivery.',
-    from: 'manager@company.com',
+const mails_DB = Array.from({ length: 30 }, (_, idx) => {
+  const id = `e${300 + idx + 1}`
+  const subjects = [
+    'Meeting Summary', 'Invoice Reminder', 'Draft: Blog Post', 'Team Outing', 'Security Notice',
+    'Birthday Invitation', 'Weekly Report', 'Flight Confirmation', 'System Update', 'Shopping Reminder',
+    'New Feature Launch', 'Draft: Resume', 'Holiday Schedule', 'Password Reset', 'Marketing Strategy',
+    'Draft: Budget Plan', 'Event RSVP', 'Newsletter Subscription', 'Draft: Menu Ideas', 'Performance Review',
+    'Draft: App Design', 'Travel Itinerary', 'Draft: Email Template', 'Project Kickoff', 'Draft: Survey Questions',
+    'Maintenance Alert', 'Draft: Presentation Slides', 'Feedback Request', 'Draft: Contract Terms', 'Welcome Message'
+  ]
+  const bodies = [
+    'Please find the summary attached.', 'Your invoice is due tomorrow.', 'Ideas for the upcoming blog post.',
+    'Let’s plan a team outing next week.', 'Suspicious activity detected on your account.',
+    'Join us for a birthday celebration!', 'Here’s the weekly performance report.', 'Your flight is confirmed.',
+    'System will be updated tonight.', 'Don’t forget to buy groceries.',
+    'We’re launching a new feature!', 'Attached is my updated resume.', 'Holiday schedule is finalized.',
+    'Click here to reset your password.', 'Strategy for Q4 marketing.', 'Budget plan draft attached.',
+    'Please RSVP to the event.', 'You’re subscribed to our newsletter.', 'Menu ideas for the party.',
+    'Your performance review is ready.', 'Initial design draft attached.', 'Your travel itinerary is below.',
+    'Template for outreach emails.', 'Kickoff meeting scheduled.', 'Survey draft attached.',
+    'Scheduled maintenance this weekend.', 'Presentation slides draft.', 'We’d love your feedback.',
+    'Contract terms draft enclosed.', 'Welcome to our platform!'
+  ]
+  const senders = [
+    'manager@company.com', 'billing@service.com', 'marketing@company.com', 'hr@company.com',
+    'security@system.com', 'friend@social.com', 'teamlead@company.com', 'travel@agency.com',
+    'noreply@system.com', 'user@appsus.com'
+  ]
+  const labelsPool = [
+    ['work'], ['urgent'], ['personal'], ['marketing'], ['draft'], ['finance'], ['hr'],
+    ['system'], ['travel'], ['security'], ['shopping'], ['news'], ['event']
+  ]
+
+  return {
+    id,
+    subject: subjects[idx],
+    body: bodies[idx],
+    from: senders[idx % senders.length],
     to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 2, 
-    isRead: false,
-    isStared: true,
+    sentAt: Date.now() - 1000 * 60 * 60 * (idx + 1),
+    isRead: idx % 3 === 0,
+    isStared: idx % 2 === 0,
     status: 'inbox',
     txt: 'puki',
-    labels: ['work', 'urgent']
-  },
-  {
-    id: 'e202',
-    subject: 'Vacation Request',
-    body: 'Can I take next Friday off?',
-    from: 'employee@company.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 1, 
-    isRead: false,
-    isStared: false,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['hr']
-  },
-  {
-    id: 'e203',
-    subject: 'Draft: New Campaign',
-    body: 'Ideas for the new marketing campaign.',
-    from: 'marketing@company.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 3, 
-    isRead: false,
-    isStared: true,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['marketing', 'draft']
-  },
-  {
-    id: 'e204',
-    subject: 'Invoice Payment',
-    body: 'Your invoice has been paid.',
-    from: 'billing@service.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 5,
-    isRead: false,
-    isStared: false,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['finance']
-  },
-  {
-    id: 'e205',
-    subject: 'Deleted Message',
-    body: 'This message was removed.',
-    from: 'noreply@system.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 24 * 7, 
-    isStared: false,
-    isRead: false,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['system']
-  },
-  {
-    id: 'e206',
-    subject: 'Birthday Wishes',
-    body: 'Happy birthday! 🎉',
-    from: 'friend@social.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 30, 
-    isRead: false,
-    isStared: true,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['personal']
-  },
-  {
-    id: 'e207',
-    subject: 'Weekly Newsletter',
-    body: 'Here are your weekly updates.',
-    from: 'newsletter@updates.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 12, 
-    isRead: false,
-    isStared: false,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['news']
-  },
-  {
-    id: 'e208',
-    subject: 'Flight Reminder',
-    body: 'Your flight to Rome is tomorrow.',
-    from: 'travel@agency.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 36, 
-    isRead: false,
-    isStared: true,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['travel']
-  },
-  {
-    id: 'e209',
-    subject: 'System Alert',
-    body: 'Unusual login detected.',
-    from: 'security@service.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * 72, 
-    isRead: false,
-    isStared: false,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['security']
-  },
-  {
-    id: 'e210',
-    subject: 'Draft: Shopping List',
-    body: 'Milk, eggs, bread...',
-    from: 'user@appsus.com',
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 10, 
-    isRead: false,
-    isStared: false,
-    status: 'inbox',
-    txt: 'puki',
-    labels: ['personal', 'shopping']
+    labels: labelsPool[idx % labelsPool.length]
   }
-]
+})
+
 export const MailService = {
     mails_DB ,
     query,

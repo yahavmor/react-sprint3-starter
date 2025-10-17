@@ -25,7 +25,7 @@ export function MailDetails() {
 
     if (!mail) return <div>Loading mail...</div>
 
-    const { subject, body, from, to, sentAt } = mail
+    const { subject, body, from, to, sentAt, status } = mail
     const formattedDate = new Date(sentAt).toLocaleString('en-US', {
         dateStyle: 'medium',
         timeStyle: 'short'
@@ -44,7 +44,7 @@ export function MailDetails() {
             </div>
 
             <div className="mail-details-actions">
-                <button onClick={() => navigate('/mail')}>← Back to inbox</button>
+                <button onClick={() => navigate(`/mail/?status=${status}`)}>←Go Back</button>
                 <button onClick={permanentlyRemoveMail}>🗑 Remove</button>
             </div>
         </section>

@@ -15,7 +15,7 @@ export function MailFolderList({ isOpen }) {
         <section className={`folders-list ${isOpen ? 'open' : 'closed'}`}>
             {isOpen && (
                 <div className="folder-content">
-                    <button onClick={() => navigate('/mail/compose')}>New Email</button>
+                <button onClick={() => navigate(`/mail/compose?status=${currentStatus}`)}>New Email</button>
                     <nav>
                         <Link to="/mail?status=inbox" className={getLinkClass('inbox')}>📥 Inbox</Link>
                         <Link to="/mail?status=sent" className={getLinkClass('sent')}>📤 Sent</Link>

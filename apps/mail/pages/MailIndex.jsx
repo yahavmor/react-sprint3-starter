@@ -5,12 +5,6 @@ import { AppHeader } from '../../../cmps/AppHeader.jsx'
 
 
 
-
-
-
-
-
-
 const { useState, useEffect, Fragment } = React
 const { Link , useSearchParams , Outlet, useNavigate } = ReactRouterDOM
 
@@ -25,14 +19,19 @@ export function MailIndex() {
     const [mailToDelete, setMailToDelete] = useState(null)
     const navigate = useNavigate()
     const status = searchParams.get('status') || 'inbox'
-    const [filterBy, setFilterBy] = useState({ status })
     const [isMenuOpen, setIsMenuOpen] = useState(true)
+    const txt = searchParams.get('txt') || ''
+    const [filterBy, setFilterBy] = useState({ status, txt })
 
-        useEffect(() => {
-        const updatedFilter = { status }
+    
+    useEffect(() => {
+        const status = searchParams.get('status') || 'inbox'
+        const txt = searchParams.get('txt') || ''
+        const updatedFilter = { status, txt }
         setFilterBy(updatedFilter)
         loadMails(updatedFilter)
-        }, [status])
+    }, [searchParams])
+
 
         useEffect(() => {
         function handleToggleMenu() {
@@ -60,22 +59,26 @@ export function MailIndex() {
 
 
     function loadMails(filter = filterBy) {
-        MailService.query(filter)
-            .then(mails => {
-                if (filter.txt) {
-                    const txt = filter.txt.toLowerCase()
-                    mails = mails.filter(mail =>
-                        mail.subject.toLowerCase().includes(txt) ||
-                        mail.body.toLowerCase().includes(txt) ||
-                        mail.from.toLowerCase().includes(txt)
-                    )
-                }
+    MailService.query(filter)
+        .then(mails => {
+            if (filter.txt) {
+                const txt = filter.txt.toLowerCase()
+                mails = mails.filter(mail =>
+                    mail.subject.toLowerCase().includes(txt) ||
+                    mail.body.toLowerCase().includes(txt) ||
+                    mail.from.toLowerCase().includes(txt)
+                )
+            }
 
-                setMails(mails)
-                setMailToDelete(null)
-            })
-            .catch(err => console.log('Error loading mails:', err))
+            // 👇 מיון לפי תאריך שליחה מהחדש לישן
+            mails.sort((a, b) => b.sentAt - a.sentAt)
+
+            setMails(mails)
+            setMailToDelete(null)
+        })
+        .catch(err => console.log('Error loading mails:', err))
     }
+
 
     function onIsREAD(mailId){
         MailService.get(mailId)
@@ -121,7 +124,6 @@ export function MailIndex() {
    
 
         return (
-        <div>
             <section className="mail-index-layout">
             <MailFolderList isOpen={isMenuOpen} />
             <section className="mail-index">
@@ -133,7 +135,6 @@ export function MailIndex() {
             <Outlet context={{ onSendMail}} />
             </section>
             </section>
-        </div>
         )
 
     }
