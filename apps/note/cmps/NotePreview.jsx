@@ -30,24 +30,34 @@ export function NotePreview({ note, onRemoveNote, onSetNoteStyle }) {
 	return (
 		<div className={`note-preview ${note.type}`} style={note.style}>
 			<NoteComponent note={note} onRemoveNote={onRemoveNote} />
-			<button
-				className="delete-btn material-symbols-outlined"
-				onClick={() => onRemoveNote(note.id)}
-			>
-				delete
-			</button>
 
-			<button className="color-choice">
-				<label htmlFor={`clr-${note.id}`} className="material-symbols-outlined">
-					palette
-				</label>
-				<input
-					type="color"
-					name="clr"
-					id={`clr-${note.id}`}
-					onInput={handleColorChange}
-				/>
-			</button>
+			<section className="action-icons flex">
+				<div>
+					<label
+						htmlFor={`clr-${note.id}`}
+						className="material-symbols-outlined"
+					>
+						palette
+					</label>
+					<input
+						type="color"
+						name="clr"
+						id={`clr-${note.id}`}
+						onInput={handleColorChange}
+					/>
+				</div>
+
+				<div className="material-symbols-outlined">edit_square</div>
+				<div className="material-symbols-outlined">mail</div>
+				<div className="material-symbols-outlined">content_copy</div>
+
+				<div
+					className="material-symbols-outlined"
+					onClick={() => onRemoveNote(note.id)}
+				>
+					delete
+				</div>
+			</section>
 		</div>
 	);
 }

@@ -1,0 +1,23 @@
+@media (min-width: 1900px) {
+	.notes-index {
+		column-count: 5;
+	}
+}
+
+@media (max-width: 1400px) {
+	.notes-index {
+		column-count: 4;
+	}
+}
+
+@media (max-width: 900px) {
+	.notes-index {
+		column-count: 3;
+	}
+}
+
+@media (max-width: 600px) {
+	.notes-index {
+		column-count: 2;
+	}
+}
