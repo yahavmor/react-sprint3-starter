@@ -1,13 +1,19 @@
 import { MailService } from "../services/mail.service.js"
 import { MailList } from "../cmps/MailList.jsx"
-import { MailFilter } from "../cmps/MailFilter.jsx"
-import { utilService } from "../../../services/util.service.js"
+import { MailFolderList } from "../cmps/MailFolderList.jsx"
+import { AppHeader } from '../../../cmps/AppHeader.jsx'
+
+
+
+
+
 
 
 
 
 const { useState, useEffect, Fragment } = React
-const { Link , useSearchParams } = ReactRouterDOM
+const { Link , useSearchParams , Outlet, useNavigate } = ReactRouterDOM
+
 
 
 export function MailIndex() {
@@ -16,60 +22,121 @@ export function MailIndex() {
 
     const [mails, setMails] = useState([])
     const [searchParams, setSearchParams] = useSearchParams()
-    const [filterBy, setFilterBy] = useState(MailService.getFilterFromSearchParams(searchParams))
-    const [selectedMailId, setSelectedMailId] = useState(null)
     const [mailToDelete, setMailToDelete] = useState(null)
+    const navigate = useNavigate()
+    const status = searchParams.get('status') || 'inbox'
+    const [filterBy, setFilterBy] = useState({ status })
+    const [isMenuOpen, setIsMenuOpen] = useState(true)
 
-
-
-
-
-    const { folder } = searchParams
-
-    useEffect(() => {
-        const updatedFilter = { ...filterBy, folder }
-        setSearchParams(utilService.cleanObject(updatedFilter))
+        useEffect(() => {
+        const updatedFilter = { status }
+        setFilterBy(updatedFilter)
         loadMails(updatedFilter)
-    }, [filterBy, folder])
+        }, [status])
 
+        useEffect(() => {
+        function handleToggleMenu() {
+            setIsMenuOpen(prev => !prev)
+        }
 
-    function loadMails() {
-        MailService.query(filterBy)
-            .then((mails)=>{setMails(mails)} )
-            .catch(err => console.log('err:', err))
-    }
-    function onRemoveMail(mailId) {
-        MailService.remove(mailId)
+        window.addEventListener('toggleMenu', handleToggleMenu)
+        return () => window.removeEventListener('toggleMenu', handleToggleMenu)
+    }, [])
+
+    
+    
+
+    
+    function onSendMail(newMail) {
+        const mailToSave = { ...newMail, status: 'sent' }
+
+        MailService.send(mailToSave)
             .then(() => {
-                setMailToDelete(null)
-                setSelectedMailId(null)
                 loadMails()
+                navigate('/mail')
             })
-            .catch(err => console.log('Error removing mail:', err))
+            .catch(err => console.log('Error sending mail:', err))
     }
 
-    function onSelectMailId(mailId) {
-        setSelectedMailId(mailId)
+
+    function loadMails(filter = filterBy) {
+        MailService.query(filter)
+            .then(mails => {
+                if (filter.txt) {
+                    const txt = filter.txt.toLowerCase()
+                    mails = mails.filter(mail =>
+                        mail.subject.toLowerCase().includes(txt) ||
+                        mail.body.toLowerCase().includes(txt) ||
+                        mail.from.toLowerCase().includes(txt)
+                    )
+                }
+
+                setMails(mails)
+                setMailToDelete(null)
+            })
+            .catch(err => console.log('Error loading mails:', err))
     }
 
+    function onIsREAD(mailId){
+        MailService.get(mailId)
+        .then(mail=>{
+            mail.isRead = 'true'
+            return MailService.save(mail)
+        })
+    }
+    function toggleMenu() {
+    setIsMenuOpen(prev => !prev)
+    }
+
+
+
+    function onRemoveMail(mailId) {
+    MailService.get(mailId)
+        .then(mail => {
+            if (!mail) throw new Error('Mail not found')
+            mail.status = 'trash'
+            return MailService.save(mail)
+        })
+
+        .then(() => {
+            setMailToDelete(null)
+            loadMails(filterBy)
+        })
+        .catch(err => console.log('Error moving mail to trash:', err))
+    }
+
+
+    
+  
 
     function onSetFilterBy(newFilterBy) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...newFilterBy }))
     }
+  
+    
+
+
     if (!mails) return <div>Loading...</div>
 
-    return (
-        <section className="mail-index">
-            {selectedMailId ? (
-            <MailDetails mailId={selectedMailId} onRemoveMail={onRemoveMail} />) : 
-            (
-            <Fragment>
-                <MailFilter defaultFilter={filterBy} onSetFilterBy={onSetFilterBy} />
-                <MailList mails={mails} onSelectMailId={onSelectMailId} />
-            </Fragment>
-            )
-            }
+   
 
-        </section>
-    ) 
-}
+        return (
+        <div>
+            <section className="mail-index-layout">
+            <MailFolderList isOpen={isMenuOpen} />
+            <section className="mail-index">
+                <MailList
+                mails={mails}
+                onRemoveMail={onRemoveMail}
+                onIsREAD={onIsREAD}
+                />
+            <Outlet context={{ onSendMail}} />
+            </section>
+            </section>
+        </div>
+        )
+
+    }
+
+
+

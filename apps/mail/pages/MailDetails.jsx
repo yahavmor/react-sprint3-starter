@@ -17,13 +17,11 @@ export function MailDetails() {
             .catch(err => console.log('Error loading mail:', err))
     }
 
-    function onRemoveMail() {
+    function permanentlyRemoveMail() {
         MailService.remove(mailId)
-            .then(() => {
-                navigate('/mail') // חזרה לרשימה אחרי מחיקה
-            })
-            .catch(err => console.log('Error removing mail:', err))
+            .then(() => navigate('/mail'))
     }
+
 
     if (!mail) return <div>Loading mail...</div>
 
@@ -47,8 +45,9 @@ export function MailDetails() {
 
             <div className="mail-details-actions">
                 <button onClick={() => navigate('/mail')}>← Back to inbox</button>
-                <button onClick={onRemoveMail}>🗑 Remove</button>
+                <button onClick={permanentlyRemoveMail}>🗑 Remove</button>
             </div>
         </section>
     )
 }
+
