@@ -17,18 +17,16 @@ import { MailCompose } from './apps/mail/cmps/MailCompose.jsx'
 
 export function RootCmp() {
     return <Router>
+        <AppHeader/>
         <section className="root-cmp">
-            <AppHeader />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-
                 <Route path="/mail" element={<MailIndex />}>
                     <Route path="compose" element={<MailCompose />} />
                 </Route>
-
                 <Route path="/mail/:mailId" element={<MailDetails />} />
-                <Route path="/mail/:folder" element={<MailIndex />} />
+
 
                 <Route path="/note" element={<NoteIndex />} />
             </Routes>

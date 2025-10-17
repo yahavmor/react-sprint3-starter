@@ -1,8 +1,12 @@
 import { MailService } from "../services/mail.service.js"
 import { MailList } from "../cmps/MailList.jsx"
-import { MailFilter } from "../cmps/MailFilter.jsx"
-import { utilService } from "../../../services/util.service.js"
 import { MailFolderList } from "../cmps/MailFolderList.jsx"
+import { AppHeader } from '../../../cmps/AppHeader.jsx'
+
+
+
+
+
 
 
 
@@ -18,17 +22,27 @@ export function MailIndex() {
 
     const [mails, setMails] = useState([])
     const [searchParams, setSearchParams] = useSearchParams()
-    const [selectedMailId, setSelectedMailId] = useState(null)
     const [mailToDelete, setMailToDelete] = useState(null)
     const navigate = useNavigate()
     const status = searchParams.get('status') || 'inbox'
     const [filterBy, setFilterBy] = useState({ status })
+    const [isMenuOpen, setIsMenuOpen] = useState(true)
 
         useEffect(() => {
         const updatedFilter = { status }
         setFilterBy(updatedFilter)
         loadMails(updatedFilter)
         }, [status])
+
+        useEffect(() => {
+        function handleToggleMenu() {
+            setIsMenuOpen(prev => !prev)
+        }
+
+        window.addEventListener('toggleMenu', handleToggleMenu)
+        return () => window.removeEventListener('toggleMenu', handleToggleMenu)
+    }, [])
+
     
     
 
@@ -46,13 +60,32 @@ export function MailIndex() {
 
 
     function loadMails(filter = filterBy) {
-    MailService.query(filter)
-        .then(mails => {
-            setMails(mails)
-            setMailToDelete(null)
-            setSelectedMailId(null)
+        MailService.query(filter)
+            .then(mails => {
+                if (filter.txt) {
+                    const txt = filter.txt.toLowerCase()
+                    mails = mails.filter(mail =>
+                        mail.subject.toLowerCase().includes(txt) ||
+                        mail.body.toLowerCase().includes(txt) ||
+                        mail.from.toLowerCase().includes(txt)
+                    )
+                }
+
+                setMails(mails)
+                setMailToDelete(null)
+            })
+            .catch(err => console.log('Error loading mails:', err))
+    }
+
+    function onIsREAD(mailId){
+        MailService.get(mailId)
+        .then(mail=>{
+            mail.isRead = 'true'
+            return MailService.save(mail)
         })
-        .catch(err => console.log('Error loading mails:', err))
+    }
+    function toggleMenu() {
+    setIsMenuOpen(prev => !prev)
     }
 
 
@@ -64,9 +97,9 @@ export function MailIndex() {
             mail.status = 'trash'
             return MailService.save(mail)
         })
+
         .then(() => {
             setMailToDelete(null)
-            setSelectedMailId(null)
             loadMails(filterBy)
         })
         .catch(err => console.log('Error moving mail to trash:', err))
@@ -74,40 +107,36 @@ export function MailIndex() {
 
 
     
-    function onSelectMailId(mailId) {
-        setSelectedMailId(mailId)
-    }
-
+  
 
     function onSetFilterBy(newFilterBy) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...newFilterBy }))
     }
+  
     
 
 
     if (!mails) return <div>Loading...</div>
 
    
-    return (
-        <section className="mail-index-layout">
-            <MailFolderList />
+
+        return (
+        <div>
+            <section className="mail-index-layout">
+            <MailFolderList isOpen={isMenuOpen} />
             <section className="mail-index">
-                <MailFilter defaultFilter={filterBy} onSetFilterBy={onSetFilterBy} />
-
-
-                {selectedMailId ? (
-                    <MailDetails mailId={selectedMailId}  />
-                ) : (
-                    <Fragment>
-                        <MailList mails={mails} onSelectMailId={onSelectMailId}  onRemoveMail={onRemoveMail}/>
-                    </Fragment>
-                )}
-
-                <Outlet context={{ onSendMail }} />
+                <MailList
+                mails={mails}
+                onRemoveMail={onRemoveMail}
+                onIsREAD={onIsREAD}
+                />
+            <Outlet context={{ onSendMail}} />
             </section>
-        </section>
+            </section>
+        </div>
         )
 
     }
+
 
 

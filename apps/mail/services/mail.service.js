@@ -164,6 +164,7 @@ function query(filterBy = {}) {
 
 
 
+
 function remove(mailId) {
     return storageService.remove(MAIL_KEY, mailId)
 }

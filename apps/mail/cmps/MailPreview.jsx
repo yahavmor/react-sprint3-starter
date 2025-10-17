@@ -1,6 +1,9 @@
+const { useParams, useNavigate } = ReactRouterDOM
 
-export function MailPreview({ mail, onRemoveMail }) {
+
+export function MailPreview({ mail, onRemoveMail, onIsREAD, onSelectMailId }) {
     const { id, subject, from, sentAt, isRead, status } = mail
+
     function getTimeAgo(sentAt) {
         const now = Date.now()
         const diffMs = now - sentAt
@@ -14,11 +17,21 @@ export function MailPreview({ mail, onRemoveMail }) {
     }
 
     const timeAgo = getTimeAgo(sentAt)
-    const previewClass = `mail-preview ${isRead ? 'read' : 'unread'}`
+    const navigate = useNavigate()
+
+    const previewClass = `mail-preview ${isRead ? 'read' : 'unread'} ${status === 'trash' ? 'in-trash' : ''}`
     const deleteTxt = status === 'trash' ? 'Delete forever' : 'Delete'
 
+
+    function handleClick() {
+        onIsREAD(id)
+        navigate(`/mail/${id}`)
+    }
+
+
+
     return (
-        <article className={previewClass}>
+        <article className={previewClass} onClick={handleClick}>
             <div className="mail-checkbox">
                 <input type="checkbox" />
             </div>

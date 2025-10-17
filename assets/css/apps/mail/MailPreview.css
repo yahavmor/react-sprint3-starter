@@ -35,6 +35,10 @@
     font-size: 0.85rem;
     transition: opacity 0.2s ease;
 }
+.mail-preview:hover:not(.in-trash) .btn-remove {
+    opacity: 1;
+    pointer-events: auto;
+}
 
 .mail-preview .btn-remove {
     opacity: 0;
@@ -56,7 +60,6 @@
     transform: scale(1.2);
     color: #a50e0e;
 }
-
 .mail-checkbox input {
     cursor: pointer;
 }

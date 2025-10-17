@@ -1,16 +1,57 @@
 .app-header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 1em;
-    background: var(--bg1);
+    padding: 0.75rem 1.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-nav a {
-    margin: .5em;
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
-nav a.active {
-    color: var(--color1);
-    font-weight: bold;
-    text-decoration: overline;
+.logo {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #1a73e8;
+    cursor: pointer;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #5f6368;
+    cursor: pointer;
+}
+
+.center-section {
+    flex: 1;
+    margin: 0 2rem;
+}
+
+.right-section {
+    display: flex;
+    gap: 1rem;
+}
+
+.right-section a {
+    text-decoration: none;
+    color: #202124;
+    font-weight: 500;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.right-section a:hover {
+    background-color: #f1f3f4;
 }
