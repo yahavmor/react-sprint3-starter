@@ -11,11 +11,11 @@ const { Link, useSearchParams, Outlet, useNavigate } = ReactRouterDOM;
 export function NoteIndex() {
 	const [notes, setNotes] = useState(null);
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [isMenuOpen, setIsMenuOpen] = useState(true);
-	const [filterBy, setFilterBy] = useState({ status, txt });
 	const status = searchParams.get('status') || 'board';
 	const txt = searchParams.get('txt') || '';
 	const navigate = useNavigate();
+	const [isMenuOpen, setIsMenuOpen] = useState(true);
+	const [filterBy, setFilterBy] = useState({ status, txt });
 
 	useEffect(() => {
 		const status = searchParams.get('status') || 'board';
@@ -100,7 +100,7 @@ export function NoteIndex() {
 				noteService
 					.remove(noteId)
 					.then(() => {
-						loadNotes();
+						loadNotes(); // assumes filterBy excludes trash
 						showSuccessMsg('Note has been successfully removed!');
 					})
 					.catch((err) => {
