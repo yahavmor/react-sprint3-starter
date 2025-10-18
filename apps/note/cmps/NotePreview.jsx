@@ -6,7 +6,13 @@ import { NoteTodos } from './NoteTodos.jsx';
 
 const cmpMap = { NoteTxt: NoteTxt, NoteImg: NoteImg, NoteTodos: NoteTodos };
 
-export function NotePreview({ note, onRemoveNote, onSetNoteStyle }) {
+export function NotePreview({
+	note,
+	onRemoveNote,
+	onArchiveNote,
+	onSetNoteStyle,
+	onCopyNote,
+}) {
 	let NoteComponent = cmpMap[note.type];
 	//console.log(note.type);
 
@@ -49,7 +55,19 @@ export function NotePreview({ note, onRemoveNote, onSetNoteStyle }) {
 
 				<div className="material-symbols-outlined">edit_square</div>
 				<div className="material-symbols-outlined">mail</div>
-				<div className="material-symbols-outlined">content_copy</div>
+				<div
+					className="material-symbols-outlined"
+					onClick={() => onArchiveNote(note.id)}
+				>
+					archive
+				</div>
+
+				<div
+					className="material-symbols-outlined"
+					onClick={() => onCopyNote(note.id)}
+				>
+					content_copy
+				</div>
 
 				<div
 					className="material-symbols-outlined"
