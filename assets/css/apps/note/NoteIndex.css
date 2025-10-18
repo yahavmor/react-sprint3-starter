@@ -1,4 +1,16 @@
 /* note index */
+.note-index-layout {
+	display: grid;
+	grid-template-areas: 'nav main';
+	grid-template-columns: 240px 1fr;
+	height: 100vh;
+}
+
+.main {
+	grid-area: 'main';
+	overflow-y: auto;
+	padding: 1rem 2rem;
+}
 
 .notes-index {
 	width: 75vw;
@@ -18,9 +30,15 @@
 	padding: 8px;
 }
 
+.folders-list {
+	grid-area: 'nav';
+	/* same shared styles */
+}
+
 .input-container {
 	margin: 8px;
 	height: 1.5rem;
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -30,6 +48,7 @@
 .input-container input {
 	width: 40vw;
 	border-radius: 8px;
+	grid-area: 'main';
 
 	line-height: 25px;
 	font-size: 20px;
