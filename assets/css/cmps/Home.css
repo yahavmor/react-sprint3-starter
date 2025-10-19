@@ -1,33 +1,114 @@
- /* home */
-
 .home {
-    background-color: var(--bg2);
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    background: radial-gradient(circle at top left, #eaf1fb, #f9fbfd);
+    padding: 3em 2em;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
-.home .box-container {
-    padding: 1em 0;
+.home-content {
+    max-width: 900px;
+    width: 100%;
+    background-color: white;
+    padding: 2em;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.6s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.home .box1 {
-    background-color: var(--color1);
-    min-height: 10em;
+.hero {
+    text-align: center;
+    margin-bottom: 2em;
 }
 
-.home .box2 {
-    background-color: var(--color2);
-    min-height: 10em;
+.hero img {
+    width: 80px;
+    margin-bottom: 1em;
 }
 
- @media (min-width: 750px) {
-    .home .box-container {
-        display: flex;
-        flex-direction: row-reverse;
-    }
-    .home .box1 {
-        flex: 1
-    }
-    .home .box2 {
-        width: 30vw;
-    }
-    
+.hero h1 {
+    font-size: 2.5em;
+    color: #1a73e8;
+    margin-bottom: 0.2em;
+}
+
+.hero p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.5em;
+    margin: 2em 0;
+    width: 100%;
+}
+
+.feature-card {
+    background-color: #f1f5fb;
+    border-radius: 12px;
+    padding: 1em;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card i {
+    font-size: 2em;
+    color: #1a73e8;
+    margin-bottom: 0.5em;
+}
+
+.feature-card h2 {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.home-cta {
+    margin-top: 2em;
+}
+
+.start-btn {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 0.6em 1.4em;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.start-btn:hover {
+    background-color: #1669c1;
+    transform: translateY(-1px);
+}
+
+.home-footer {
+    margin-top: 3em;
+    font-size: 0.9em;
+    text-align: center;
+    color: #777;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }

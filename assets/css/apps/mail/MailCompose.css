@@ -4,6 +4,7 @@
     right: 2em;
     width: 500px;
     max-width: 90vw;
+    height: 660px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -12,6 +13,22 @@
     flex-direction: column;
     font-family: 'Segoe UI', sans-serif;
     z-index: 1000;
+} 
+
+.mail-compose-actions {
+  position: absolute;
+  right: 1em;
+  top: 0.5em;
+  display: flex;
+  gap: 0.5em;
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity 0.1s ease;
+}
+
+.mail-compose:hover .mail-compose-actions {
+  opacity: 1; 
+  pointer-events: auto; 
 }
 
 .mail-compose header {
@@ -42,6 +59,7 @@
     flex-direction: column;
     padding: 1em;
     gap: 0.5em;
+    flex-grow: 1;
 }
 
 .mail-compose input[type="email"],
@@ -57,21 +75,35 @@
 }
 
 .mail-compose textarea {
-    height: 150px;
+    flex-grow: 1;
 }
 
-.mail-compose button[type="submit"] {
-    align-self: flex-start;
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    padding: 0.5em 1.2em;
-    border-radius: 4px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.send {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 0.6em 2.4em;
+  border-radius: 24px;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  align-items: center;
+  gap: 0.5em;
+  width: max-content;
 }
 
-.mail-compose button[type="submit"]:hover {
-    background-color: #1669c1;
+.send:hover {
+  background-color: #1669c1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+.send:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+

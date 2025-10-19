@@ -1,3 +1,5 @@
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
 const { useOutletContext, useNavigate, useSearchParams } = ReactRouterDOM
 
 export function MailCompose() {
@@ -44,18 +46,28 @@ export function MailCompose() {
         onSendMail(mail)
         navigate('/mail')
     }
+    function keepNote(){
+
+    }
 
     return (
         <section className="mail-compose">
             <header>
-                <h2>New Message</h2>
-                <button onClick={handleClose}>✖</button>
+                    <div className="mail-compose-actions">
+                        <button onClick={keepNote} title="Send as note">
+                            <i className="fa-solid fa-paper-plane"></i>
+                        </button>
+                        <button onClick={handleClose} title="Close">
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>                        
+                    </div>
+                    <h2>New Message</h2>
             </header>
             <form onSubmit={handleSubmit}>
                 <input type="email" name="to" placeholder="To" value={mail.to} onChange={handleChange} required />
                 <input type="text" name="subject" placeholder="Subject" value={mail.subject} onChange={handleChange} />
-                <textarea name="body" placeholder="Write your message..." value={mail.body} onChange={handleChange} />
-                <button type="submit">Send</button>
+                <textarea name="body" value={mail.body} onChange={handleChange} />
+                <button className='send'>Send</button>
             </form>
         </section>
     )
