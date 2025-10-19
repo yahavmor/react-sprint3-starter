@@ -5,6 +5,8 @@ export function AppHeader() {
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
     const isMailRoute = location.pathname.startsWith('/mail')
+    const isNoteRoute = location.pathname.startsWith('/note')
+
 
     function goHome() {
         navigate('/mail')
@@ -16,12 +18,12 @@ export function AppHeader() {
     }
 
     function onFilterChange(txt) {
-        // 👇 עדכון ה־URL עם מילת החיפוש
+        
         const updatedParams = new URLSearchParams(searchParams)
         updatedParams.set('txt', txt)
         setSearchParams(updatedParams)
 
-        // 👇 שליחת אירוע לפילטר
+        
         const filterEvent = new CustomEvent('setMailFilter', {
             detail: { txt }
         })

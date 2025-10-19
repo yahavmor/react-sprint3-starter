@@ -70,11 +70,9 @@ export function MailIndex() {
                 )
             }
 
-            // 👇 מיון לפי תאריך שליחה מהחדש לישן
             mails.sort((a, b) => b.sentAt - a.sentAt)
 
             setMails(mails)
-            setMailToDelete(null)
         })
         .catch(err => console.log('Error loading mails:', err))
     }
