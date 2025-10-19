@@ -2,10 +2,11 @@ const { useNavigate, NavLink, useLocation, useSearchParams } = ReactRouterDOM;
 const { Fragment } = React;
 
 export function AppHeader() {
-    const navigate = useNavigate()
-    const location = useLocation()
-    const [searchParams, setSearchParams] = useSearchParams()
-    const isMailRoute = location.pathname.startsWith('/mail')
+	const navigate = useNavigate();
+	const location = useLocation();
+	const [searchParams, setSearchParams] = useSearchParams();
+	const isMailRoute = location.pathname.startsWith('/mail');
+	const isNoteRoute = location.pathname.startsWith('/note');
 
 	function goHome() {
 		if (isMailRoute) {
@@ -20,16 +21,16 @@ export function AppHeader() {
 		window.dispatchEvent(toggleEvent);
 	}
 
-    function onFilterChange(txt) {
-        const updatedParams = new URLSearchParams(searchParams)
-        updatedParams.set('txt', txt)
-        setSearchParams(updatedParams)
+	function onFilterChange(txt) {
+		const updatedParams = new URLSearchParams(searchParams);
+		updatedParams.set('txt', txt);
+		setSearchParams(updatedParams);
 
-        const filterEvent = new CustomEvent('setMailFilter', {
-            detail: { txt }
-        })
-        window.dispatchEvent(filterEvent)
-    }
+		const filterEvent = new CustomEvent('setMailFilter', {
+			detail: { txt },
+		});
+		window.dispatchEvent(filterEvent);
+	}
 
 	return (
 		<header className="app-header">

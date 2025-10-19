@@ -1,4 +1,6 @@
 import { MailService } from "../services/mail.service.js"
+import { showSuccessMsg , showErrorMsg } from '../../../services/event-bus.service.js'
+
 const { useState, useEffect } = React
 const { useParams, useNavigate } = ReactRouterDOM
 
@@ -18,9 +20,16 @@ export function MailDetails() {
     }
 
     function permanentlyRemoveMail() {
-        MailService.remove(mailId)
-            .then(() => navigate('/mail'))
-    }
+    MailService.remove(mailId)
+        .then(() => {
+            showSuccessMsg('Mail removed permanently!')
+            navigate('/mail')
+        })
+        .catch((err) => {
+            console.log('Error removing mail:', err)
+            showErrorMsg('Mail did not remove permanently!')
+        })
+}
 
 
     if (!mail) return <div>Loading mail...</div>
@@ -50,4 +59,3 @@ export function MailDetails() {
         </section>
     )
 }
-

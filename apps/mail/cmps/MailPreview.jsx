@@ -2,7 +2,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 const { useParams, useNavigate } = ReactRouterDOM
 
 
-export function MailPreview({ mail, onRemoveMail, onIsREAD, onSelectMailId }) {
+export function MailPreview({ mail, onRemoveMail, onIsREAD, onSelectMailId ,onToggleStar}) {
     const { id, subject, from, sentAt, isRead, status } = mail
 
     function getTimeAgo(sentAt) {
@@ -35,7 +35,17 @@ export function MailPreview({ mail, onRemoveMail, onIsREAD, onSelectMailId }) {
             <div className="mail-checkbox">
                 <input type="checkbox" />
             </div>
-            <div className="mail-star">☆</div>
+            <div className="mail-star">
+                <button
+                    className="star-btn"
+                    onClick={(ev) => {
+                        ev.stopPropagation()
+                        onToggleStar(id)
+                    }}
+                >
+            <i className={`fa-star ${mail.isStarred ? 'fas' : 'far'}`}></i>                
+            </button>
+            </div>
             <div className="mail-from">{from}</div>
             <div className="mail-subject">{subject}</div>
             <div className="mail-time">{timeAgo}</div>
@@ -54,3 +64,4 @@ export function MailPreview({ mail, onRemoveMail, onIsREAD, onSelectMailId }) {
         </article>
     )
 }
+

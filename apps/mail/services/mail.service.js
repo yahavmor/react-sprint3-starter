@@ -1,8 +1,6 @@
 import { storageService } from "../../../services/async-storage.service.js"
 import { utilService } from "../../../services/util.service.js"
 
-const MAIL_KEY = 'mailDB'
-
 const mails_DB = Array.from({ length: 30 }, (_, idx) => {
   const id = `e${300 + idx + 1}`
   const subjects = [
@@ -44,12 +42,17 @@ const mails_DB = Array.from({ length: 30 }, (_, idx) => {
     to: 'user@appsus.com',
     sentAt: Date.now() - 1000 * 60 * 60 * (idx + 1),
     isRead: idx % 3 === 0,
-    isStared: idx % 2 === 0,
+    isStared:false,
     status: 'inbox',
     txt: 'puki',
     labels: labelsPool[idx % labelsPool.length]
   }
 })
+
+
+const MAIL_KEY = 'mailDB'
+
+
 
 export const MailService = {
     mails_DB ,
@@ -59,7 +62,10 @@ export const MailService = {
     getFilterFromSearchParams,
     remove,
     send,
-    save
+    save,
+    filter,
+    sort,
+    toggleStar
 }
 _createMails()
 
@@ -70,6 +76,9 @@ function _createMails(){
 
 function query(filterBy = {}) {
     return storageService.query(MAIL_KEY).then(mails => {
+        if (filterBy.status === 'starred') {
+            return mails.filter(mail => mail.isStarred)
+        }
         if (filterBy.status) {
             return mails.filter(mail => mail.status === filterBy.status)
         }
@@ -78,6 +87,18 @@ function query(filterBy = {}) {
 }
 
 
+function filter(mails, filter) {
+    if (filter.txt) {
+        const txt = filter.txt.toLowerCase();
+        mails = mails.filter(
+            (mail) =>
+                mail.subject.toLowerCase().includes(txt) ||
+                mail.body.toLowerCase().includes(txt) ||
+                mail.from.toLowerCase().includes(txt)
+        );
+    }
+    return mails;
+}
 
 
 
@@ -121,6 +142,7 @@ function send(mail) {
         body: mail.body,
         sentAt: Date.now(),
         isRead: false,
+        isStared:false,
         status: mail.status || 'sent'
     }
 
@@ -130,4 +152,9 @@ function send(mail) {
 function save(mail) {
     return storageService.put(MAIL_KEY, mail)
 }
-
+function sort(mails){
+    return mails.sort((a, b) => b.sentAt - a.sentAt)
+}
+function toggleStar(mail){
+    mail.isStarred = !mail.isStarred
+}

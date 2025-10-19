@@ -1,25 +1,46 @@
 .user-msg {
     position: fixed;
     bottom: -100px;
-    right: .5em;
-    padding: .5em;
+    right: 1em;
+    max-width: 300px;
+    padding: 1em 1.2em;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     background-color: #111;
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.95em;
+    line-height: 1.4;
+    z-index: 1000;
+    opacity: 0;
+    transition: bottom 0.5s ease, opacity 0.5s ease;
 }
 
 .user-msg.open {
-    bottom: .8em;
-    transition: bottom .5s;
+    bottom: 1em;
+    opacity: 1;
 }
 
 .user-msg.success {
-    background-color: var(--color2);
+    background-color: var(--color2, #4CAF50); 
 }
 
 .user-msg.error {
-    background-color: var(--color3);
+    background-color: var(--color3, #F44336); 
 }
 
-.user-msg button{
-   float: right;
-   margin-inline-start: 4px;
+.user-msg button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2em;
+    cursor: pointer;
+    float: right;
+    margin-inline-start: 8px;
+    transition: color 0.3s ease;
 }
+
+.user-msg button:hover {
+    color: #ccc;
+}
+

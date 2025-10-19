@@ -2,6 +2,9 @@ import { MailService } from '../services/mail.service.js';
 import { MailList } from '../cmps/MailList.jsx';
 import { MailFolderList } from '../cmps/MailFolderList.jsx';
 import { AppHeader } from '../../../cmps/AppHeader.jsx';
+import { showSuccessMsg , showErrorMsg } from '../../../services/event-bus.service.js'
+
+
 
 const { useState, useEffect, Fragment } = React;
 const { Link, useSearchParams, Outlet, useNavigate } = ReactRouterDOM;
@@ -40,31 +43,26 @@ export function MailIndex() {
 			.then(() => {
 				loadMails();
 				navigate('/mail');
+				showSuccessMsg('Mail sent!')
 			})
-			.catch((err) => console.log('Error sending mail:', err));
+			.catch((err) => {
+				console.log('Error sending mail:', err);
+				showErrorMsg('Mail did not sent')
+			})
 	}
-
 	function loadMails(filter = filterBy) {
-		MailService.query(filter)
-			.then((mails) => {
-				if (filter.txt) {
-					const txt = filter.txt.toLowerCase();
-					mails = mails.filter(
-						(mail) =>
-							mail.subject.toLowerCase().includes(txt) ||
-							mail.body.toLowerCase().includes(txt) ||
-							mail.from.toLowerCase().includes(txt)
-					);
-				}
-
-            // 👇 מיון לפי תאריך שליחה מהחדש לישן
-            mails.sort((a, b) => b.sentAt - a.sentAt)
-
-            setMails(mails)
-            setMailToDelete(null)
-        })
-        .catch(err => console.log('Error loading mails:', err))
-    }
+	MailService.query(filter)
+		.then((mails) => {
+			const filteredMails = MailService.filter(mails, filter)
+			const sortedMails =  MailService.sort(filteredMails)
+			setMails(sortedMails)
+			setMailToDelete(null)
+		})
+		.catch((err) => {
+			console.log('Error loading mails:', err)
+			showErrorMsg('Mails did not load')
+		})
+	}
 
 	function onIsREAD(mailId) {
 		MailService.get(mailId).then((mail) => {
@@ -75,21 +73,36 @@ export function MailIndex() {
 	function toggleMenu() {
 		setIsMenuOpen((prev) => !prev);
 	}
+	function onToggleStar(mailId) {
+	MailService.get(mailId)
+		.then(mail => {
+			mail.isStarred = !mail.isStarred
+			return MailService.save(mail).then(() => {
+			showSuccessMsg(mail.isStarred ? 'Mail has been starred!' : 'Mail has been unstarred successfully!')
+			})
+		})
+		.then(() => loadMails(filterBy))
+		.catch(err => {
+			console.log('Error toggling star:', err)
+			showErrorMsg('Could not update starred status')
+		})
+	}
 
 	function onRemoveMail(mailId) {
 		MailService.get(mailId)
 			.then((mail) => {
-				if (!mail) throw new Error('Mail not found');
 				mail.status = 'trash';
+				showSuccessMsg('Mail removed to trash!')
 				return MailService.save(mail);
 			})
-
 			.then(() => {
 				setMailToDelete(null);
 				loadMails(filterBy);
 			})
-			.catch((err) => console.log('Error moving mail to trash:', err));
-	}
+			.catch((err) => {
+				console.log('Error removing mail:', err);
+				showErrorMsg('Mail did not removed!')
+			})	}
 
 	function onSetFilterBy(newFilterBy) {
 		setFilterBy((prevFilter) => ({ ...prevFilter, ...newFilterBy }));
@@ -101,13 +114,15 @@ export function MailIndex() {
 		<section className="mail-index-layout">
 			<MailFolderList isOpen={isMenuOpen} />
 			<section className="mail-index">
-				<MailList
-					mails={mails}
-					onRemoveMail={onRemoveMail}
-					onIsREAD={onIsREAD}
-				/>
+			<MailList
+				mails={mails}
+				onRemoveMail={onRemoveMail}
+				onIsREAD={onIsREAD}
+				onToggleStar={onToggleStar}
+			/>
 				<Outlet context={{ onSendMail }} />
 			</section>
 		</section>
 	);
 }
+

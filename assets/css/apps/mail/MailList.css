@@ -26,3 +26,54 @@
     color: #70757a;
     font-size: 1rem;
 }
+
+.mail-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.mail-list-item {
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+}
+
+.mail-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 1rem 1.5rem;
+    transition: background-color 0.2s ease;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.mail-link:hover {
+    background-color: #f5f5f5;
+}
+
+.no-mails-msg {
+    padding: 2rem;
+    text-align: center;
+    color: #70757a;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 1rem;
+}
+.mail-link {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+}
+
+.no-mails-msg {
+    padding: 1.5rem;
+    font-size: 0.95rem;
+    margin: 0.5rem;
+}
+
+

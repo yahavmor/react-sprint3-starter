@@ -12,7 +12,9 @@ export function MailCompose() {
         to: '',
         subject: '',
         body: '',
-        status: 'sent'
+        status: 'sent',
+        isRead: true,
+        isStared:false,
     })
 
     function handleChange({ target }) {
@@ -58,3 +60,5 @@ export function MailCompose() {
         </section>
     )
 }
+
+
