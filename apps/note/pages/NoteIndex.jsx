@@ -1,20 +1,42 @@
 import { NotePreview } from '../cmps/NotePreview.jsx';
 import { noteService } from '../services/note.service.js';
 import { showSuccessMsg } from '../../../services/event-bus.service.js';
+import { NoteFolderList } from '../cmps/NoteFolderList.jsx';
+
 import { AddNote } from '../cmps/AddNote.jsx';
 
-const { useState, useEffect } = React;
+const { useState, useEffect, Fragment } = React;
+const { Link, useSearchParams, Outlet, useNavigate } = ReactRouterDOM;
 
 export function NoteIndex() {
 	const [notes, setNotes] = useState(null);
+	const [searchParams, setSearchParams] = useSearchParams();
+	const status = searchParams.get('status') || 'board';
+	const txt = searchParams.get('txt') || '';
+	const navigate = useNavigate();
+	const [isMenuOpen, setIsMenuOpen] = useState(true);
+	const [filterBy, setFilterBy] = useState({ status, txt });
 
 	useEffect(() => {
-		loadNotes();
+		const status = searchParams.get('status') || 'board';
+		const txt = searchParams.get('txt') || '';
+		const updatedFilter = { status, txt };
+		setFilterBy(updatedFilter);
+		loadNotes(updatedFilter);
+	}, [searchParams]);
+
+	useEffect(() => {
+		function handleToggleMenu() {
+			setIsMenuOpen((prev) => !prev);
+		}
+
+		window.addEventListener('toggleMenu', handleToggleMenu);
+		return () => window.removeEventListener('toggleMenu', handleToggleMenu);
 	}, []);
 
-	function loadNotes() {
+	function loadNotes(filter = filterBy) {
 		noteService
-			.query()
+			.query(filter)
 			.then(setNotes)
 			.catch((err) => console.log('err:', err));
 	}
@@ -31,19 +53,73 @@ export function NoteIndex() {
 			});
 	}
 
-	function onRemoveNote(noteId) {
-		console.log('Removing note with id:', noteId);
-		noteService
-			.remove(noteId)
-			.then(() => {
-				setNotes((notes) => notes.filter((note) => note.id !== noteId));
-				showSuccessMsg('Note has been successfully removed!');
-			})
-			.catch((err) => {
-				console.error('Error removing Note:', err);
-			});
+	function onArchiveNote(noteId) {
+		noteService.get(noteId).then((note) => {
+			note.status = 'archive';
+			noteService
+				.save(note)
+				.then(() => {
+					loadNotes(filterBy); // refresh after update
+					showSuccessMsg('Note moved to archive.');
+				})
+				.catch((err) => {
+					console.log('Error moving note to archive:', err);
+				});
+		});
 	}
 
+	function onCopyNote(noteId) {
+		noteService.get(noteId).then((note) => {
+			if (!note) throw new Error('Note not found');
+			const copiedNote = {
+				...note,
+				id: null,
+				createdAt: Date.now(),
+				status: 'board',
+			};
+
+			noteService
+				.save(copiedNote)
+				.then((newNote) => {
+					setNotes((notes) => [...notes, newNote]);
+					showSuccessMsg('Note copied to board.');
+				})
+				.catch((err) => {
+					console.error('Error copying note:', err);
+				});
+		});
+	}
+
+	function onRemoveNote(noteId) {
+		console.log('Removing note with id:', noteId);
+
+		noteService.get(noteId).then((note) => {
+			if (!note) throw new Error('Note not found');
+
+			if (note.status === 'trash') {
+				noteService
+					.remove(noteId)
+					.then(() => {
+						loadNotes(); // assumes filterBy excludes trash
+						showSuccessMsg('Note has been successfully removed!');
+					})
+					.catch((err) => {
+						console.error('Error removing Note:', err);
+					});
+			} else {
+				note.status = 'trash';
+				noteService
+					.save(note)
+					.then(() => {
+						loadNotes(); // refresh after update
+						showSuccessMsg('Note moved to trash.');
+					})
+					.catch((err) => {
+						console.log('Error moving note to trash:', err);
+					});
+			}
+		});
+	}
 	function onSetNoteStyle(updatedNote) {
 		noteService
 			.put(updatedNote)
@@ -55,24 +131,41 @@ export function NoteIndex() {
 			.catch((err) => console.error('Error updating note color:', err));
 	}
 
+	function onSetFilterBy(newFilterBy) {
+		setFilterBy((prevFilter) => ({ ...prevFilter, ...newFilterBy }));
+	}
+
+	function toggleMenu() {
+		setIsMenuOpen((prev) => !prev);
+	}
+
 	function onUpdateNote(noteToUpdate) {}
 
 	// console.log('render')
 	if (!notes) return <div className="loading-container">Loading...</div>;
 	console.log(notes);
 	return (
-		<section>
-			<AddNote onAddNote={onAddNote} />
-			<div className="notes-index">
-				{notes.map((note) => (
-					<NotePreview
-						key={note.id}
-						note={note}
-						onRemoveNote={onRemoveNote}
-						onSetNoteStyle={onSetNoteStyle}
-					/>
-				))}
-			</div>
+		<section className="note-index-layout">
+			<NoteFolderList
+				className={`folders-list ${isMenuOpen ? '' : 'closed'}`}
+				isOpen={isMenuOpen}
+			/>
+
+			<main className="main">
+				<AddNote onAddNote={onAddNote} />
+				<div className="notes-index">
+					{notes.map((note) => (
+						<NotePreview
+							key={note.id}
+							note={note}
+							onRemoveNote={onRemoveNote}
+							onArchiveNote={onArchiveNote}
+							onCopyNote={onCopyNote}
+							onSetNoteStyle={onSetNoteStyle}
+						/>
+					))}
+				</div>
+			</main>
 		</section>
 	);
 }

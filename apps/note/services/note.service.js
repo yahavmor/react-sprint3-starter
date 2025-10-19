@@ -2,7 +2,7 @@ import { utilService } from '../../../services/util.service.js';
 import { storageService } from '../../../services/async-storage.service.js';
 
 const NOTE_KEY = 'noteDB';
-var gFilterBy = { title: '' };
+
 _createNotes();
 
 export const noteService = {
@@ -10,22 +10,51 @@ export const noteService = {
 	remove,
 	save,
 	put,
+	get,
 	createNote,
+	getFilterFromSearchParams,
 };
 
-function query() {
+function query(filterBy = {}) {
 	return storageService.query(NOTE_KEY).then((notes) => {
-		//Todo: remove in future
-		if (!notes.length) return fakeNotes;
+		let filteredNotes = notes;
 
-		return notes;
+		if (filterBy.status) {
+			filteredNotes = filteredNotes.filter(
+				(note) => note.status === filterBy.status
+			);
+		}
+
+		if (filterBy.txt) {
+			const txt = filterBy.txt.toLowerCase();
+			filteredNotes = filteredNotes.filter((note) => {
+				const title = note.title || '';
+				const infoTitle = (note.info && note.info.title) || '';
+				const infoTxt = (note.info && note.info.txt) || '';
+				const todos = (note.info && note.info.todos) || [];
+
+				const todosMatch = Array.isArray(todos)
+					? todos.some((todo) => (todo.txt || '').toLowerCase().includes(txt))
+					: false;
+
+				return (
+					title.toLowerCase().includes(txt) ||
+					infoTitle.toLowerCase().includes(txt) ||
+					infoTxt.toLowerCase().includes(txt) ||
+					todosMatch
+				);
+			});
+		}
+
+		return filteredNotes;
 	});
 }
+
 function save(note) {
 	if (!note.id) {
-		return storageService.put(NOTE_KEY, note);
-	} else {
 		return storageService.post(NOTE_KEY, note);
+	} else {
+		return storageService.put(NOTE_KEY, note);
 	}
 }
 
@@ -33,18 +62,33 @@ function remove(noteId) {
 	return storageService.remove(NOTE_KEY, noteId);
 }
 
+function get(noteId) {
+	return storageService.get(NOTE_KEY, noteId);
+}
+
 function put(note) {
 	return storageService.put(NOTE_KEY, note);
 }
 
-function createNote(type, info, isPinned, style) {
+function getFilterFromSearchParams(searchParams) {
+	const status = searchParams.get('status') || '';
+	const text = searchParams.get('text') || '';
+	//const isRead = searchParams.get('isRead') || ''
+	return {
+		status,
+		text,
+		//isRead
+	};
+}
+
+function createNote(type, info, style) {
 	if (!info) throw new Error('Info not provided, failed to add note');
 
 	const note = {
 		type,
 		id: utilService.makeId(),
 		createdAt: Date.now(),
-		isPinned,
+		status: 'board',
 		info,
 	};
 
@@ -61,6 +105,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: 1112222,
 			type: 'NoteTxt',
+			status: 'board',
 			isPinned: true,
 			style: {
 				backgroundColor: '#00d',
@@ -73,6 +118,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: 1112223,
 			type: 'NoteImg',
+			status: 'board',
 			isPinned: false,
 			style: { backgroundColor: '#1503d9ff' },
 			info: {
@@ -84,6 +130,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: 1112224,
 			type: 'NoteTodos',
+			status: 'board',
 			isPinned: false,
 			info: {
 				title: 'Get my stuff together',
@@ -106,6 +153,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: Date.now() - 86400000,
 			type: 'NoteTxt',
+			status: 'board',
 			isPinned: true,
 			style: { backgroundColor: '#fef6c3' },
 			info: {
@@ -116,6 +164,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: Date.now() - 43200000,
 			type: 'NoteTxt',
+			status: 'board',
 			isPinned: false,
 			style: { backgroundColor: '#e3f2fd' },
 			info: {
@@ -126,6 +175,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: Date.now() - 10000000,
 			type: 'NoteTodos',
+			status: 'board',
 			isPinned: false,
 			style: { backgroundColor: '#f1f8e9' },
 			info: {
@@ -150,6 +200,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: Date.now() - 20000000,
 			type: 'NoteImg',
+			status: 'board',
 			isPinned: false,
 			style: { backgroundColor: '#fff3e0' },
 			info: {
@@ -161,6 +212,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: Date.now() - 10000000,
 			type: 'NoteTodos',
+			status: 'board',
 			isPinned: false,
 			style: { backgroundColor: '#a1cd6fff' },
 			info: {
@@ -185,6 +237,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: Date.now() - 30000000,
 			type: 'NoteImg',
+			status: 'board',
 			isPinned: true,
 			style: { backgroundColor: '#fce4ec' },
 			info: {
@@ -196,6 +249,7 @@ function _createNotes() {
 			id: utilService.makeId(),
 			createdAt: Date.now() - 30000000,
 			type: 'NoteImg',
+			status: 'pinned',
 			isPinned: true,
 			style: { backgroundColor: '#dd688fff' },
 			info: {
