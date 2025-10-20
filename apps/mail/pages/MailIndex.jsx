@@ -1,3 +1,4 @@
+
 import { MailService } from '../services/mail.service.js';
 import { MailList } from '../cmps/MailList.jsx';
 import { MailFolderList } from '../cmps/MailFolderList.jsx';
@@ -18,6 +19,16 @@ export function MailIndex() {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
 	const txt = searchParams.get('txt') || '';
 	const [filterBy, setFilterBy] = useState({ status, txt });
+	const [allMails, setAllMails] = useState([]);
+	
+	useEffect(() => {
+	MailService.query()
+		.then(setAllMails)
+		.catch(err => {
+			console.log('Error loading all mails:', err);
+			showErrorMsg('Could not load all mails');
+		});
+	}, []);
 
 	useEffect(() => {
 		const status = searchParams.get('status') || 'inbox';
@@ -35,34 +46,37 @@ export function MailIndex() {
 		window.addEventListener('toggleMenu', handleToggleMenu);
 		return () => window.removeEventListener('toggleMenu', handleToggleMenu);
 	}, []);
-
 	function onSendMail(newMail) {
-		const mailToSave = { ...newMail, status: 'sent' };
-
-		MailService.send(mailToSave)
-			.then(() => {
-				loadMails();
-				navigate('/mail');
-				showSuccessMsg('Mail sent!')
-			})
-			.catch((err) => {
-				console.log('Error sending mail:', err);
-				showErrorMsg('Mail did not sent')
-			})
-	}
-	function loadMails(filter = filterBy) {
-	MailService.query(filter)
-		.then((mails) => {
-			const filteredMails = MailService.filter(mails, filter)
-			const sortedMails =  MailService.sort(filteredMails)
-			setMails(sortedMails)
-			setMailToDelete(null)
+	const mailToSave = { ...newMail };
+	MailService.send(mailToSave)
+		.then(() => {
+		loadMails();
+		loadAllMails()
+		showSuccessMsg(mailToSave.status === 'draft' ? 'Mail saved as draft!' : 'Mail sent!');
+		navigate(`/mail?status=${mailToSave.status}`);
 		})
 		.catch((err) => {
-			console.log('Error loading mails:', err)
-			showErrorMsg('Mails did not load')
-		})
+		console.log('Error sending mail:', err);
+		showErrorMsg('Mail did not send');
+		});
 	}
+
+	function loadMails(filter = filterBy) {
+    MailService.query(filter)
+        .then((filteredMails) => {
+            const sortedMails = MailService.sort(filteredMails)
+            setMails(sortedMails)
+            setMailToDelete(null)
+        })
+        .catch((err) => {
+            console.log('Error loading mails:', err)
+            showErrorMsg('Mails did not load')
+        })
+	}
+
+
+
+
 
 	function onIsREAD(mailId) {
 		MailService.get(mailId).then((mail) => {
@@ -70,6 +84,15 @@ export function MailIndex() {
 			return MailService.save(mail);
 		});
 	}
+	function loadAllMails() {
+    MailService.query()
+        .then(setAllMails)
+        .catch(err => {
+            console.log('Error loading all mails:', err);
+            showErrorMsg('Could not load all mails');
+        });
+}
+
 	function toggleMenu() {
 		setIsMenuOpen((prev) => !prev);
 	}
@@ -81,7 +104,11 @@ export function MailIndex() {
 			showSuccessMsg(mail.isStarred ? 'Mail has been starred!' : 'Mail has been unstarred successfully!')
 			})
 		})
-		.then(() => loadMails(filterBy))
+		.then(() => {
+		loadMails(filterBy);
+		loadAllMails(); 
+	})
+
 		.catch(err => {
 			console.log('Error toggling star:', err)
 			showErrorMsg('Could not update starred status')
@@ -98,6 +125,8 @@ export function MailIndex() {
 			.then(() => {
 				setMailToDelete(null);
 				loadMails(filterBy);
+				loadAllMails(); 
+
 			})
 			.catch((err) => {
 				console.log('Error removing mail:', err);
@@ -112,7 +141,7 @@ export function MailIndex() {
 
 	return (
 		<section className="mail-index-layout">
-			<MailFolderList isOpen={isMenuOpen} />
+		<MailFolderList isOpen={isMenuOpen} mails={allMails} />
 			<section className="mail-index">
 			<MailList
 				mails={mails}

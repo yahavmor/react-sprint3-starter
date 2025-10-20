@@ -1,4 +1,8 @@
+
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import { noteService } from '../../note/services/note.service.js'
+import { showSuccessMsg } from '../../../services/event-bus.service.js'
+
 
 const { useOutletContext, useNavigate, useSearchParams } = ReactRouterDOM
 
@@ -18,6 +22,21 @@ export function MailCompose() {
         isRead: true,
         isStared:false,
     })
+    function keepNote() {
+        const noteType = 'NoteTxt'
+        const info = { txt: `${mail.subject}\n${mail.body}` }
+
+        noteService.createNote(noteType, info, false)
+            .then(() => {
+                showSuccessMsg('Note created from mail!')
+                navigate('/note') 
+            })
+            .catch(err => {
+                console.error('Error creating note from mail:', err)
+                showErrorMsg('Failed to create note')
+            })
+    }
+
 
     function handleChange({ target }) {
         const { name, value } = target
@@ -29,26 +48,22 @@ export function MailCompose() {
     }
 
     function handleClose() {
-        if (isMailDirty(mail)) {
-            const answer = window.confirm('You have unsaved changes. Save as draft?')
-            if (answer) {
-                const draftMail = { ...mail, status: 'draft' }
-                onSendMail(draftMail)
-                navigate(`/mail?status=draft`)
-                return
-            }
+    if (isMailDirty(mail)) {
+        const answer = window.confirm('You have unsaved changes. Save as draft?')
+        if (answer) {
+            const draftMail = { ...mail, status: 'draft' }
+            onSendMail(draftMail)
+            return
         }
-        navigate(`/mail?status=${originStatus}`)
     }
-
+    navigate(`/mail?status=${originStatus}`)
+}
     function handleSubmit(ev) {
         ev.preventDefault()
         onSendMail(mail)
         navigate('/mail')
     }
-    function keepNote(){
 
-    }
 
     return (
         <section className="mail-compose">
@@ -72,5 +87,4 @@ export function MailCompose() {
         </section>
     )
 }
-
 

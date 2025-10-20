@@ -53,7 +53,10 @@ nav a {
 
 nav a.active-status {
 	font-weight: bold;
-	color: #1a73e8;
+	color: black;
+	background-color: #c2e7ff;
+	border-top-right-radius: 12px;
+	border-bottom-right-radius: 12px;
 }
 .folders-list.closed .folder-content {
 	display: none;
@@ -61,21 +64,52 @@ nav a.active-status {
 .compose-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
+    width: max-content;
     background-color: #c2e7ff;
-    color: #1a73e8;
     border: none;
     border-radius: 24px;
-    padding: 12px 24px;
+    padding: 20px 24px;
     font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s ease;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
 }
 
 .compose-btn:hover {
-    background-color: #a7d7ff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+.fa-pencil{
+	font-size: 1.4em;
+
+}
+.mail-count {
+    font-weight: normal;
+    color: #666;
+    font-size: 0.75rem;
+}
+.folder-label-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.folder-label {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.mail-count {
+    font-size: 0.75rem;
+    color: #666;
+    margin-left: auto;
+}
+.folders-list nav a.active-status .mail-count {
+    font-weight: bold;
+    color: black;
 }
 

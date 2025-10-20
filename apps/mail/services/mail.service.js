@@ -41,7 +41,7 @@ const mails_DB = Array.from({ length: 30 }, (_, idx) => {
     from: senders[idx % senders.length],
     to: 'user@appsus.com',
     sentAt: Date.now() - 1000 * 60 * 60 * (idx + 1),
-    isRead: idx % 3 === 0,
+    isRead: false,
     isStared:false,
     status: 'inbox',
     txt: 'puki',
@@ -158,3 +158,9 @@ function sort(mails){
 function toggleStar(mail){
     mail.isStarred = !mail.isStarred
 }
+
+
+
+
+
+
