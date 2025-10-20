@@ -1,126 +1,124 @@
 .app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    position: relative;
-    z-index: 1000;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #ffffff;
+	border-bottom: 1px solid #ddd;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	position: relative;
+	z-index: 1000;
 }
 
 .left-section {
-    display: flex;
-    align-items: center;
-    gap: 1.5em;
-    flex-grow: 1;
+	display: flex;
+	align-items: center;
+	gap: 1.5em;
+	flex-grow: 1;
 }
 
 button.menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.4em;
-    color: #5f6368;
-    padding: 1em ;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 1.4em;
+	color: #5f6368;
+	padding: 1em;
 	margin: auto;
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
+	border-radius: 50%;
+	transition: background-color 0.2s ease;
 }
-.fa-bars{
+.fa-bars {
 	font-size: 1.4em;
 }
 
 .menu-toggle:hover {
-    background-color: #f1f3f4;
+	background-color: #f1f3f4;
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.6em;
-    background: none;
-    border: none;
-    cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 0.6em;
+	background: none;
+	border: none;
+	cursor: pointer;
 }
 
 .logo img {
-    width: 42px;
-    height: 42px;
+	width: 42px;
+	height: 42px;
 }
 
 .logo-text {
-    font-size: 1.8em;
-    font-weight: 500;
-    color: rgb(77, 77, 77);
+	font-size: 1.8em;
+	font-weight: 500;
+	color: rgb(77, 77, 77);
 }
 
 .mail-filter-container {
-    flex-grow: 1;
-    margin-left: 2em;
-    margin-right: 2em;
+	flex-grow: 1;
+	margin-left: 2em;
+	margin-right: 2em;
 }
 
 .mail-filter-container form {
-    position: relative;
-    width: 100%;
-    max-width: 320px;
+	position: relative;
+	width: 100%;
+	max-width: 320px;
 }
 
 .mail-filter-container input[type='text'] {
-    width: 100%;
-    padding: 0.6em 2.5em 0.6em 1em;
-    border: none;
-    border-radius: 24px;
-    font-size: 1em;
-    background-color: #f1f3f4;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s ease;
+	width: 100%;
+	padding: 0.6em 2.5em 0.6em 1em;
+	border: none;
+	border-radius: 24px;
+	font-size: 1em;
+	background-color: #f1f3f4;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	transition: box-shadow 0.2s ease;
 }
 
 .mail-filter-container input[type='text']:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #c2dbff;
+	outline: none;
+	box-shadow: 0 0 0 2px #c2dbff;
 }
 
 .search-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #5f6368;
-    font-size: 1em;
-    pointer-events: none;
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #5f6368;
+	font-size: 1em;
+	pointer-events: none;
 }
 
 .right-section {
-    display: flex;
-    align-items: center;
-    gap: 1em;
+	display: flex;
+	align-items: center;
+	padding: 1em;
+	gap: 1em;
 }
 
 .right-section a {
-    text-decoration: none;
-    color: #5f6368;
-    font-weight: 500;
-    font-size: 0.95em;
-    padding: 0.4em 0.8em;
-    border-radius: 6px;
-    transition: background-color 0.2s ease, color 0.2s ease;
+	text-decoration: none;
+	color: #5f6368;
+	font-weight: 500;
+	font-size: 0.95em;
+	padding: 0.4em 0.8em;
+	border-radius: 6px;
+	transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .right-section a:hover {
-    background-color: #e8f0fe;
-    color: #1a73e8;
+	background-color: #e8f0fe;
+	color: #1a73e8;
 }
 
 .right-section a.active {
-    color: #1a73e8;
-    background-color: #e8f0fe;
+	color: #1a73e8;
+	background-color: #e8f0fe;
 }
-
-
-

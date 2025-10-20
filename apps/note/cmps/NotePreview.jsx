@@ -9,6 +9,7 @@ const cmpMap = { NoteTxt: NoteTxt, NoteImg: NoteImg, NoteTodos: NoteTodos };
 export function NotePreview({
 	note,
 	onRemoveNote,
+	onNoteClick,
 	onArchiveNote,
 	onSetNoteStyle,
 	onCopyNote,
@@ -33,8 +34,16 @@ export function NotePreview({
 		onSetNoteStyle(updatedNote);
 	}
 
+	const handleClick = () => {
+		onNoteClick(note);
+	};
+
 	return (
-		<div className={`note-preview ${note.type}`} style={note.style}>
+		<div
+			className={`note-preview ${note.type}`}
+			style={note.style}
+			onClick={handleClick}
+		>
 			<NoteComponent note={note} onRemoveNote={onRemoveNote} />
 
 			<section className="action-icons flex">
@@ -42,6 +51,9 @@ export function NotePreview({
 					<label
 						htmlFor={`clr-${note.id}`}
 						className="material-symbols-outlined"
+						onClick={(event) => {
+							event.stopPropagation();
+						}}
 					>
 						palette
 					</label>
@@ -57,21 +69,30 @@ export function NotePreview({
 				<div className="material-symbols-outlined">mail</div>
 				<div
 					className="material-symbols-outlined"
-					onClick={() => onArchiveNote(note.id)}
+					onClick={(event) => {
+						event.stopPropagation();
+						onArchiveNote(note.id);
+					}}
 				>
 					archive
 				</div>
 
 				<div
 					className="material-symbols-outlined"
-					onClick={() => onCopyNote(note.id)}
+					onClick={(event) => {
+						event.stopPropagation();
+						onCopyNote(note.id);
+					}}
 				>
 					content_copy
 				</div>
 
 				<div
 					className="material-symbols-outlined"
-					onClick={() => onRemoveNote(note.id)}
+					onClick={(event) => {
+						event.stopPropagation();
+						onRemoveNote(note.id);
+					}}
 				>
 					delete
 				</div>

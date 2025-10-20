@@ -12,7 +12,9 @@ export function AddTxtValueNote({ onSubmit, noteType }) {
 
 	return (
 		<div>
-			<button onClick={add}>Add Note</button>
+			<button className="add-note-btn" onClick={add}>
+				Add Note
+			</button>
 			<input
 				ref={inputTxtValueNote}
 				placeholder={

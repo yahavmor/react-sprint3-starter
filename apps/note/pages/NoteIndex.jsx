@@ -2,8 +2,11 @@ import { NotePreview } from '../cmps/NotePreview.jsx';
 import { noteService } from '../services/note.service.js';
 import { showSuccessMsg } from '../../../services/event-bus.service.js';
 import { NoteFolderList } from '../cmps/NoteFolderList.jsx';
-
+import { Modal } from '../cmps/NoteModal.jsx';
 import { AddNote } from '../cmps/AddNote.jsx';
+import { NoteImg } from '../cmps/NoteImg.jsx';
+import { NoteTxt } from '../cmps/NoteTxt.jsx';
+import { NoteTodos } from '../cmps/NoteTodos.jsx';
 
 const { useState, useEffect, Fragment } = React;
 const { Link, useSearchParams, Outlet, useNavigate } = ReactRouterDOM;
@@ -16,6 +19,9 @@ export function NoteIndex() {
 	const navigate = useNavigate();
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
 	const [filterBy, setFilterBy] = useState({ status, txt });
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedNote, setSelectedNote] = useState(null); // State to hold the content of the currently selected note
 
 	useEffect(() => {
 		const status = searchParams.get('status') || 'board';
@@ -141,8 +147,20 @@ export function NoteIndex() {
 
 	function onUpdateNote(noteToUpdate) {}
 
+	// Function passed to NotePreview
+	const handleOpenModal = (note) => {
+		setSelectedNote(note); // Set the specific note data
+		setIsModalOpen(true); // Open the modal
+	};
+
+	// Function to close the modal
+	const handleCloseModal = () => {
+		setIsModalOpen(false);
+		setSelectedNote(null); // Clear the note data when closed
+	};
+
 	// console.log('render')
-	if (!notes) return <div className="loading-container">Loading...</div>;
+	if (!notes) return <div className="no-notes-msg">Loading...</div>;
 	console.log(notes);
 	return (
 		<section className="note-index-layout">
@@ -158,6 +176,7 @@ export function NoteIndex() {
 						<NotePreview
 							key={note.id}
 							note={note}
+							onNoteClick={handleOpenModal}
 							onRemoveNote={onRemoveNote}
 							onArchiveNote={onArchiveNote}
 							onCopyNote={onCopyNote}
@@ -166,6 +185,25 @@ export function NoteIndex() {
 					))}
 				</div>
 			</main>
+
+			<Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+				{selectedNote && (
+					<div className="modal-content-wrapper" style={selectedNote.style}>
+						{selectedNote.type === 'NoteImg' && (
+							// This is the correct way to render the NoteImg component
+							<NoteImg note={selectedNote} onRemoveNote={onRemoveNote} />
+						)}
+
+						{selectedNote.type === 'NoteTxt' && (
+							<NoteTxt note={selectedNote} onRemoveNote={onRemoveNote} />
+						)}
+
+						{selectedNote.type === 'NoteTodos' && (
+							<NoteTodos note={selectedNote} onRemoveNote={onRemoveNote} />
+						)}
+					</div>
+				)}
+			</Modal>
 		</section>
 	);
 }
