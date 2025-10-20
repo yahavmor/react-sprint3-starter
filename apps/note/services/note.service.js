@@ -89,6 +89,7 @@ function createNote(type, info, style) {
 		id: utilService.makeId(),
 		createdAt: Date.now(),
 		status: 'board',
+		style: { backgroundColor: '#ffffffff' },
 		info,
 	};
 

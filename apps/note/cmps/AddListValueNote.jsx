@@ -38,13 +38,18 @@ export function AddListValueNote({ onSubmit, onRemoveTodo }) {
 
 	return (
 		<div>
-			<button onClick={add}>Add Note</button>
+			<button className="add-note-btn" onClick={add}>
+				Add Note
+			</button>
 			<input
 				ref={inputListValueNote}
 				type="text"
 				placeholder="Add your task..."
 			/>
-			<button onClick={handleAddTasktoTodos}> + </button>
+			<button className="plus-btn" onClick={handleAddTasktoTodos}>
+				{' '}
+				+{' '}
+			</button>
 		</div>
 	);
 }

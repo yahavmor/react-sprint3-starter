@@ -45,6 +45,20 @@
 	margin-block: 50px;
 }
 
+.input-wrapper {
+	position: relative; /* Establishes a positioning context */
+	display: inline-block; /* Or block, depending on layout needs */
+	width: 300px; /* Adjust width as needed */
+}
+
+.input-wrapper .inside-button {
+	position: absolute; /* Positions the button relative to the wrapper */
+	top: 0;
+	right: 0;
+	height: 100%; /* Makes the button fill the height of the wrapper */
+	/* Add other styles for your button (e.g., background, border) */
+}
+
 .input-container input {
 	width: 40vw;
 	border-radius: 8px;
@@ -62,4 +76,20 @@
 	margin: 5px;
 	background: none;
 	border: none;
+	transform: translate(-180px);
+}
+
+.plus-btn {
+	background-color: #ffefc3;
+	color: #e8bb1a;
+	border-radius: 50%;
+	border: none;
+	transform: translate(-180px);
+	line-height: 1;
+}
+
+.no-notes-msg {
+	padding: 1.5rem;
+	font-size: 0.95rem;
+	margin: 0.5rem;
 }

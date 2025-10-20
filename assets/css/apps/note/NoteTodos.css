@@ -1,0 +1,40 @@
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.clean-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.clean-list li {
+	position: relative;
+	padding: 6px 15px;
+	font-size: 1rem;
+	color: #333;
+	display: flex;
+	align-items: flex-start; /* aligns button slightly above text */
+	gap: 6px;
+}
+
+ul.clean-list li:last-child {
+	margin-bottom: 1rem;
+}
+
+.todos h2 {
+	margin-block: 1rem;
+}
+
+.remove-task-btn {
+	background: none;
+	border: none;
+	color: #383737;
+	padding-left: 0;
+	padding: 0;
+	cursor: pointer;
+	line-height: 1;
+	transform: translateY(-2.5px);
+}

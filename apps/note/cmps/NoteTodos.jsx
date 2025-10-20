@@ -1,12 +1,17 @@
 export function NoteTodos({ note }) {
 	return (
-		<div>
+		<div className="todos">
 			<h2>{note.info.title}</h2>
-			<ul>
+			<ul className="clean-list">
 				{note.info.todos.map((todo) => (
 					<li key={todo.id}>
 						{todo.txt}
-						<button onClick={() => onRemoveTodo(todo.id)}> x </button>
+						<button
+							className="remove-task-btn "
+							onClick={() => onRemoveTodo(todo.id)}
+						>
+							✖️
+						</button>
 					</li>
 				))}
 			</ul>

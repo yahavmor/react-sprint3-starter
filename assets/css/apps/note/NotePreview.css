@@ -12,7 +12,7 @@
 	display: inline-block;
 	position: relative;
 	width: 100%;
-	margin-bottom: 16px;
+	margin-bottom: 2rem;
 	break-inside: avoid;
 	box-sizing: border-box;
 
@@ -21,6 +21,7 @@
 	border: 1px solid transparent;
 	border-radius: 8px;
 	border-color: #e0e0e0;
+	color: #333;
 }
 
 .note-preview:hover {
@@ -32,29 +33,30 @@
 	content: 'check_circle';
 	font-family: 'Material Symbols Outlined';
 	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+	color: rgb(86, 86, 86);
 	font-size: 24px;
 	position: absolute;
 	right: 95%;
 	top: 0;
 	transform: translateY(-50%);
 	opacity: 0;
-	transition: opacity 0.3s ease; /* Smooth transition for appearance */
-	pointer-events: none; /* Prevents the pseudo-element from interfering with mouse events on the parent */
+	transition: opacity 0.3s ease;
+	pointer-events: none;
 }
-
 .note-preview:hover::after {
 	opacity: 1;
 }
 
-.NoteTxt {
+.NoteTxt p {
 	text-align: start;
-	padding: 10px;
+	padding-inline: 10px;
 	break-inside: avoid;
 }
 
 .NoteImg img {
-	margin: 10px;
 	width: 100%;
+
+	object-fit: cover;
 }
 
 .material-symbols-outlined {
@@ -67,6 +69,7 @@
 
 	width: 100%;
 	height: 30px;
+	cursor: pointer;
 
 	opacity: 0;
 	visibility: hidden;
@@ -98,4 +101,20 @@
 input[name='clr'] {
 	opacity: 0;
 	width: 1px;
+}
+
+.add-note-btn {
+	background: none;
+	font-family: 'Roboto', sans-serif;
+	font-size: 1rem;
+	background-color: #ffefc3;
+	color: #e8bb1a;
+	border: none;
+	border-radius: 8px;
+	padding: 12px 24px;
+	font-size: 0.95rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }

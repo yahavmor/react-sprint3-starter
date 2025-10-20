@@ -12,6 +12,8 @@
 
 @import './apps/note/NoteIndex.css';
 @import './apps/note/NotePreview.css';
+@import './apps/note/NoteTodos.css';
+@import './apps/note/Modal.css';
 @import './apps/note/mq-notes.css';
 
 @import './apps/mail/MailIndex.css';
@@ -20,6 +22,5 @@
 @import './apps/mail/MailDetails.css';
 @import './apps/mail/MailFolderList.css';
 @import './apps/mail/MailCompose.css';
-
 
 @import './apps/mail/mq.css';
