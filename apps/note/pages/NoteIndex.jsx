@@ -7,6 +7,7 @@ import { AddNote } from '../cmps/AddNote.jsx';
 import { NoteImg } from '../cmps/NoteImg.jsx';
 import { NoteTxt } from '../cmps/NoteTxt.jsx';
 import { NoteTodos } from '../cmps/NoteTodos.jsx';
+import { MailService } from '../../mail/services/mail.service.js';
 
 const { useState, useEffect, Fragment } = React;
 const { Link, useSearchParams, Outlet, useNavigate } = ReactRouterDOM;
@@ -137,6 +138,54 @@ export function NoteIndex() {
 			.catch((err) => console.error('Error updating note color:', err));
 	}
 
+	function Gmail(note) {
+		console.log('here');
+		let subject = 'Note';
+		let body = '';
+
+		switch (note.type) {
+			case 'NoteTxt':
+				subject = 'Text Note';
+				body = note.info.txt;
+				break;
+
+			case 'NoteTodos':
+				subject = note.info.title || 'Todo List';
+				body = note.info.todos
+					.map((todo) => {
+						const status = todo.doneAt ? '✔️' : '❌';
+						return `${status} ${todo.txt}`;
+					})
+					.join('\n');
+				break;
+
+			case 'NoteImg':
+				subject = note.info.title || 'Image Note';
+				body = body = `Image URL: ${note.info.url}`;
+				break;
+
+			default:
+				body = 'Unsupported note type.';
+		}
+
+		const mail = {
+			from: 'me@notes.com',
+			to: ' ',
+			subject,
+			body,
+			status: 'draft',
+		};
+
+		MailService.send(mail)
+			.then(() => {
+				showSuccessMsg('Mail created from note!');
+				navigate('/mail');
+			})
+			.catch((err) => {
+				console.error('Error creating mail from note:', err);
+				showErrorMsg('Failed to create mail');
+			});
+	}
 	function onSetFilterBy(newFilterBy) {
 		setFilterBy((prevFilter) => ({ ...prevFilter, ...newFilterBy }));
 	}
@@ -149,7 +198,7 @@ export function NoteIndex() {
 
 	// Function passed to NotePreview
 	const handleOpenModal = (note) => {
-		setSelectedNote(note); // Set the specific note data
+		setSelectedNote(note);
 		setIsModalOpen(true); // Open the modal
 	};
 
@@ -179,6 +228,7 @@ export function NoteIndex() {
 							onNoteClick={handleOpenModal}
 							onRemoveNote={onRemoveNote}
 							onArchiveNote={onArchiveNote}
+							Gmail={Gmail}
 							onCopyNote={onCopyNote}
 							onSetNoteStyle={onSetNoteStyle}
 						/>
@@ -190,7 +240,6 @@ export function NoteIndex() {
 				{selectedNote && (
 					<div className="modal-content-wrapper" style={selectedNote.style}>
 						{selectedNote.type === 'NoteImg' && (
-							// This is the correct way to render the NoteImg component
 							<NoteImg note={selectedNote} onRemoveNote={onRemoveNote} />
 						)}
 

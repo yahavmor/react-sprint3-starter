@@ -1,0 +1,35 @@
+.color-pallete {
+	position: absolute;
+	bottom: -50px;
+	left: 0;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 8px;
+	border: 1px solid #ddd;
+	background: #fff;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	border-radius: 25px;
+	z-index: 10;
+	width: 420px;
+}
+
+.color-input {
+	width: 24px;
+	height: 24px;
+	margin: 4px;
+	cursor: pointer;
+	border-radius: 25px;
+	border: 1px solid #bbb;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.color-input:hover {
+	transform: scale(1.1);
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.color-input.selected {
+	outline: 2px solid #a78bfa;
+	outline-offset: 2px;
+	position: relative;
+}
