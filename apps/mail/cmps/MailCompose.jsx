@@ -1,4 +1,3 @@
-
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import { noteService } from '../../note/services/note.service.js'
 import { showSuccessMsg } from '../../../services/event-bus.service.js'

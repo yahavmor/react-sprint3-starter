@@ -1,11 +1,11 @@
 .labels-list {
-  padding: 1rem;
   background-color: #f5f7fa;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   width: 220px;
   transition: all 0.3s ease;
   width: 100%;
+  border-bottom: 1px solid #ddd;
 }
 
 .labels-list nav {
@@ -13,40 +13,57 @@
   justify-content: space-between;
   gap: 0.5rem;
 }
+.labels-list nav a {
+  flex: 1;
+  padding: 1em;
+}
+.labels-list nav a.active-label {
+  border-bottom: 3px solid rgb(11, 87, 208)
+;
+}
+
+
 
 .label-wrapper {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.6rem 1rem;
   border-radius: 6px;
   transition: background-color 0.2s ease;
+  padding: 0.5rem;
+  justify-content: center;
 }
 
-.label-wrapper:hover {
+.labels-list nav a:hover {
   background-color: #e2e6ea;
   cursor: pointer;
 }
 
 .label-txt {
-  font-size: 1rem;
+  font-size: 1.4rem;
   font-weight: 500;
-  color: #333;
+  color: rgb(51, 51, 51);
+  font-family: "Google Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
 
-a.active-label .label-wrapper {
-  background-color: #0078d4;
-}
+
 
 a.active-label .label-txt {
-  color: white;
+  color: rgb(11, 87, 208)
+;
 }
 
 .label-wrapper i {
-  color: #666;
+  color: rgb(51, 51, 51);
   transition: color 0.2s ease;
 }
 
 a.active-label .label-wrapper i {
-  color: white;
+  color: rgb(11, 87, 208);
+}
+.fa-users,
+.fa-tag,
+.fa-image {
+  font-size: 1.6rem;
+  margin-right: 1em;
 }

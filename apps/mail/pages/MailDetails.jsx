@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-free/css/all.min.css'
 import { MailService } from "../services/mail.service.js"
 import { showSuccessMsg , showErrorMsg } from '../../../services/event-bus.service.js'
 
@@ -43,10 +44,20 @@ export function MailDetails() {
     return (
         <section className="mail-details-modal">
             <h2>{subject}</h2>
+            
+            
             <div className="mail-meta">
-                <p><strong>From:</strong> {from}</p>
-                <p><strong>To:</strong> {to}</p>
-                <p><strong>Sent:</strong> {formattedDate}</p>
+                <div className='right-section-mail'>
+                    <div className="envelope-wrapper">
+                        <img className="envelope-img" src="apps/mail/imgs/envelop.png" alt="Envelope" />
+                    </div>
+                    <div className="from-to-mail">
+                        <p> {from}</p>
+                        <p> {to}</p> 
+                    </div>
+                </div>
+            
+                <p>{formattedDate}</p>
             </div>
             <div className="mail-body">
                 <p>{body}</p>

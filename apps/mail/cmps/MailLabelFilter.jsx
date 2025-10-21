@@ -18,16 +18,19 @@ export function MailLabelFilter({ isOpen, mails }) {
                 <nav>
                     <Link to="/mail?label=primary" className={getLinkLabel('primary')}>
                         <div className="label-wrapper">
+                            <i className="fa-regular fa-image"></i>
                             <span className="label-txt">Primary</span>
                         </div>
                     </Link>
                     <Link to="/mail?label=promotions" className={getLinkLabel('promotions')}>
                         <div className="label-wrapper">
+                            <i className="fa-solid fa-tag"></i>
                             <span className="label-txt">Promotions</span>
                         </div>
                     </Link>
                     <Link to="/mail?label=social" className={getLinkLabel('social')}>
                         <div className="label-wrapper">
+                            <i className="fa-solid fa-users"></i>
                             <span className="label-txt">Social</span>
                         </div>
                     </Link> 
