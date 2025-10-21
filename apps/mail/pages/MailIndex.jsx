@@ -4,6 +4,7 @@ import { MailList } from '../cmps/MailList.jsx';
 import { MailFolderList } from '../cmps/MailFolderList.jsx';
 import { AppHeader } from '../../../cmps/AppHeader.jsx';
 import { showSuccessMsg , showErrorMsg } from '../../../services/event-bus.service.js'
+import { MailLabelFilter } from '../cmps/MailLabelFilter.jsx';
 
 
 
@@ -20,6 +21,8 @@ export function MailIndex() {
 	const txt = searchParams.get('txt') || '';
 	const [filterBy, setFilterBy] = useState({ status, txt });
 	const [allMails, setAllMails] = useState([]);
+	const label = searchParams.get('label') || '';
+
 	
 	useEffect(() => {
 	MailService.query()
@@ -30,22 +33,33 @@ export function MailIndex() {
 		});
 	}, []);
 
-	useEffect(() => {
+		useEffect(() => {
 		const status = searchParams.get('status') || 'inbox';
 		const txt = searchParams.get('txt') || '';
-		const updatedFilter = { status, txt };
+		const label = searchParams.get('label') || '';
+		const updatedFilter = { status, txt, label };
 		setFilterBy(updatedFilter);
 		loadMails(updatedFilter);
 	}, [searchParams]);
+
 
 	useEffect(() => {
 		function handleToggleMenu() {
 			setIsMenuOpen((prev) => !prev);
 		}
+		
 
 		window.addEventListener('toggleMenu', handleToggleMenu);
 		return () => window.removeEventListener('toggleMenu', handleToggleMenu);
 	}, []);
+
+	useEffect(() => {
+    const label = searchParams.get('label');
+    if (!label) {
+        navigate('/mail?label=primary', { replace: true });
+    }
+	}, []);
+
 	function onSendMail(newMail) {
 	const mailToSave = { ...newMail };
 	MailService.send(mailToSave)
@@ -53,7 +67,6 @@ export function MailIndex() {
 		loadMails();
 		loadAllMails()
 		showSuccessMsg(mailToSave.status === 'draft' ? 'Mail saved as draft!' : 'Mail sent!');
-		navigate(`/mail?status=${mailToSave.status}`);
 		})
 		.catch((err) => {
 		console.log('Error sending mail:', err);
@@ -143,6 +156,7 @@ export function MailIndex() {
 		<section className="mail-index-layout">
 		<MailFolderList isOpen={isMenuOpen} mails={allMails} />
 			<section className="mail-index">
+			<MailLabelFilter  isOpen={isMenuOpen} mails={allMails} />
 			<MailList
 				mails={mails}
 				onRemoveMail={onRemoveMail}

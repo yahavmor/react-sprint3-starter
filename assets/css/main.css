@@ -22,5 +22,6 @@
 @import './apps/mail/MailDetails.css';
 @import './apps/mail/MailFolderList.css';
 @import './apps/mail/MailCompose.css';
+@import './apps/mail/MailLabelFilter.css';
 
 @import './apps/mail/mq.css';

@@ -1,0 +1,52 @@
+.labels-list {
+  padding: 1rem;
+  background-color: #f5f7fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  width: 220px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.labels-list nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.label-wrapper:hover {
+  background-color: #e2e6ea;
+  cursor: pointer;
+}
+
+.label-txt {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+a.active-label .label-wrapper {
+  background-color: #0078d4;
+}
+
+a.active-label .label-txt {
+  color: white;
+}
+
+.label-wrapper i {
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+a.active-label .label-wrapper i {
+  color: white;
+}

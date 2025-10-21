@@ -30,23 +30,22 @@ const mails_DB = Array.from({ length: 30 }, (_, idx) => {
     'noreply@system.com', 'user@appsus.com'
   ]
   const labelsPool = [
-    ['work'], ['urgent'], ['personal'], ['marketing'], ['draft'], ['finance'], ['hr'],
-    ['system'], ['travel'], ['security'], ['shopping'], ['news'], ['event']
+    'primary', 'promotions', 'social'
   ]
 
-  return {
-    id,
-    subject: subjects[idx],
-    body: bodies[idx],
-    from: senders[idx % senders.length],
-    to: 'user@appsus.com',
-    sentAt: Date.now() - 1000 * 60 * 60 * (idx + 1),
-    isRead: false,
-    isStared:false,
-    status: 'inbox',
-    txt: 'puki',
-    labels: labelsPool[idx % labelsPool.length]
-  }
+return {
+  id,
+  subject: subjects[idx],
+  body: bodies[idx],
+  from: senders[idx % senders.length],
+  to: 'user@appsus.com',
+  sentAt: Date.now() - 1000 * 60 * 60 * (idx + 1),
+  isRead: Math.random() < 0.5, 
+  isStared: false,
+  status: 'inbox',
+  txt: 'puki',
+  labels: labelsPool[idx % labelsPool.length]
+}
 })
 
 
@@ -76,15 +75,22 @@ function _createMails(){
 
 function query(filterBy = {}) {
     return storageService.query(MAIL_KEY).then(mails => {
-        if (filterBy.status === 'starred') {
-            return mails.filter(mail => mail.isStarred)
-        }
         if (filterBy.status) {
-            return mails.filter(mail => mail.status === filterBy.status)
+            mails = mails.filter(mail => mail.status === filterBy.status);
         }
-        return mails
-    })
+        if (filterBy.txt) {
+            const regex = new RegExp(filterBy.txt, 'i');
+            mails = mails.filter(mail => regex.test(mail.subject) || regex.test(mail.body));
+        }
+        if (filterBy.label && filterBy.label !== 'primary') {
+            mails = mails.filter(mail => mail.labels.includes(filterBy.label));
+        }
+        return mails;
+    });
 }
+
+
+
 
 
 function filter(mails, filter) {
