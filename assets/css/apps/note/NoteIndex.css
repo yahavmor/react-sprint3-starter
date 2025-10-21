@@ -46,17 +46,16 @@
 }
 
 .input-wrapper {
-	position: relative; /* Establishes a positioning context */
-	display: inline-block; /* Or block, depending on layout needs */
-	width: 300px; /* Adjust width as needed */
+	position: relative;
+	display: inline-block;
+	width: 300px;
 }
 
 .input-wrapper .inside-button {
-	position: absolute; /* Positions the button relative to the wrapper */
+	position: absolute;
 	top: 0;
 	right: 0;
-	height: 100%; /* Makes the button fill the height of the wrapper */
-	/* Add other styles for your button (e.g., background, border) */
+	height: 100%;
 }
 
 .input-container input {
@@ -80,12 +79,26 @@
 }
 
 .plus-btn {
-	background-color: #ffefc3;
-	color: #e8bb1a;
-	border-radius: 50%;
-	border: none;
-	transform: translate(-180px);
+	color: #000000;
+
+	font-family: 'Material Symbols Outlined';
+	font-weight: 100;
+	font-style: normal;
+	font-size: 15px;
 	line-height: 1;
+	letter-spacing: normal;
+	text-transform: none;
+	display: inline-block;
+	white-space: nowrap;
+	word-wrap: normal;
+	direction: ltr;
+	-webkit-font-feature-settings: 'liga';
+	-webkit-font-smoothing: antialiased;
+
+	text-align: center;
+	font-size: 15px;
+	cursor: pointer;
+	transform: translate(-182px);
 }
 
 .no-notes-msg {

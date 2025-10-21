@@ -46,10 +46,14 @@ export function AddListValueNote({ onSubmit, onRemoveTodo }) {
 				type="text"
 				placeholder="Add your task..."
 			/>
-			<button className="plus-btn" onClick={handleAddTasktoTodos}>
+			{/* <button className="plus-btn" onClick={handleAddTasktoTodos}>
 				{' '}
 				+{' '}
-			</button>
+			</button> */}
+
+			<span class=" plus-btn " onClick={handleAddTasktoTodos}>
+				add_circle
+			</span>
 		</div>
 	);
 }
