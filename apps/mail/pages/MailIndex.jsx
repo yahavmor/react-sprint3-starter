@@ -5,6 +5,8 @@ import { MailFolderList } from '../cmps/MailFolderList.jsx';
 import { AppHeader } from '../../../cmps/AppHeader.jsx';
 import { showSuccessMsg , showErrorMsg } from '../../../services/event-bus.service.js'
 import { MailLabelFilter } from '../cmps/MailLabelFilter.jsx';
+import { MailPagination } from '../cmps/MailPagination.jsx';
+
 
 
 
@@ -22,6 +24,11 @@ export function MailIndex() {
 	const [filterBy, setFilterBy] = useState({ status, txt });
 	const [allMails, setAllMails] = useState([]);
 	const label = searchParams.get('label') || '';
+	const mailsPerPage = 10;
+	const currentPage = parseInt(searchParams.get('page')) || 1;
+	const indexOfLastMail = currentPage * mailsPerPage;
+	const indexOfFirstMail = indexOfLastMail - mailsPerPage;
+	const pagedMails = mails.slice(indexOfFirstMail, indexOfLastMail);
 
 	
 	useEffect(() => {
@@ -87,10 +94,6 @@ export function MailIndex() {
         })
 	}
 
-
-
-
-
 	function onIsREAD(mailId) {
 		MailService.get(mailId).then((mail) => {
 			mail.isRead = 'true';
@@ -149,6 +152,10 @@ export function MailIndex() {
 	function onSetFilterBy(newFilterBy) {
 		setFilterBy((prevFilter) => ({ ...prevFilter, ...newFilterBy }));
 	}
+	function paginate(pageNumber) {
+	setSearchParams({ ...Object.fromEntries(searchParams), page: pageNumber });
+	}
+
 
 	if (!mails) return <div>Loading...</div>;
 
@@ -156,9 +163,16 @@ export function MailIndex() {
 		<section className="mail-index-layout">
 		<MailFolderList isOpen={isMenuOpen} mails={allMails} />
 			<section className="mail-index">
+		<MailPagination
+		mailsPerPage={mailsPerPage}
+		totalMails={allMails.length}
+		paginate={paginate}
+		currentPage={currentPage}
+		/>
+
 			<MailLabelFilter  isOpen={isMenuOpen} mails={allMails} />
 			<MailList
-				mails={mails}
+				mails={pagedMails}
 				onRemoveMail={onRemoveMail}
 				onIsREAD={onIsREAD}
 				onToggleStar={onToggleStar}

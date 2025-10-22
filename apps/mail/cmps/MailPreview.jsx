@@ -28,12 +28,10 @@ export function MailPreview({ mail, onRemoveMail, onIsREAD, onSelectMailId ,onTo
         navigate(`/mail/${id}`)
     }
 
-
-
     return (
         <article className={previewClass} onClick={handleClick}>
             <div className="mail-checkbox">
-                <input type="checkbox" />
+                
             </div>
             <div className="mail-star">
                 <button

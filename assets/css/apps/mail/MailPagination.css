@@ -1,0 +1,39 @@
+.mail-pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.pagination {
+  list-style: none;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0;
+  padding-right: 2em;
+  justify-content: right;
+}
+
+.pagination li button {
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.pagination li button:hover {
+  background-color: #f0f0f0;
+  border-radius: 50%;
+
+}
+
+
+
+.pagination li.disabled button {
+  opacity: 0.5;
+    background-color: transparent;
+}
+
+.arrow-right, .arrow-left {
+  background-color: white;
+  font-size: 1.2em;
+}
