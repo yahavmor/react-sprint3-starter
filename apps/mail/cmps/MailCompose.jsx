@@ -43,20 +43,19 @@ export function MailCompose() {
     }
 
     function isMailDirty(mail) {
-        return mail.to || mail.subject || mail.body
+    return mail.to.trim() || mail.subject.trim() || mail.body.trim()
     }
+
 
     function handleClose() {
     if (isMailDirty(mail)) {
-        const answer = window.confirm('You have unsaved changes. Save as draft?')
-        if (answer) {
-            const draftMail = { ...mail, status: 'draft' }
-            onSendMail(draftMail)
-            return
-        }
+        const draftMail = { ...mail, status: 'draft' }
+        onSendMail(draftMail)
     }
     navigate(`/mail?status=${originStatus}`)
-}
+    }
+
+
     function handleSubmit(ev) {
         ev.preventDefault()
         onSendMail(mail)
@@ -68,9 +67,14 @@ export function MailCompose() {
         <section className="mail-compose">
             <header>
                     <div className="mail-compose-actions">
-                        <button onClick={keepNote} title="Send as note">
+                        <button
+                            onClick={keepNote}
+                            title="Send as note"
+                            disabled={!isMailDirty(mail)}
+                            >
                             <i className="fa-solid fa-paper-plane"></i>
                         </button>
+
                         <button onClick={handleClose} title="Close">
                             <i className="fa-solid fa-xmark"></i>
                         </button>                        
