@@ -127,6 +127,26 @@ export function NoteIndex() {
 			}
 		});
 	}
+
+	function onRemoveTodo(noteId, toDoId) {
+		noteService.get(noteId).then((note) => {
+			const updatedTodos = note.info.todos.filter((todo) => todo.id !== toDoId);
+			const updatedNote = {
+				...note,
+				info: {
+					...note.info,
+					todos: updatedTodos,
+				},
+			};
+			noteService.save(updatedNote).then(() => {
+				if (selectedNote && selectedNote.id === noteId) {
+					setSelectedNote(updatedNote);
+				}
+				loadNotes(filterBy);
+			});
+		});
+	}
+
 	function onSetNoteStyle(updatedNote) {
 		noteService
 			.put(updatedNote)
@@ -194,6 +214,17 @@ export function NoteIndex() {
 		setIsMenuOpen((prev) => !prev);
 	}
 
+	function onPinNote(note) {
+		const updatedNote = { ...note, isPinned: !note.isPinned };
+		noteService
+			.put(updatedNote)
+			.then((savedNote) => {
+				setNotes((prevNotes) =>
+					prevNotes.map((n) => (n.id === savedNote.id ? savedNote : n))
+				);
+			})
+			.catch((err) => console.error('Error updating pinned status:', err));
+	}
 	function onUpdateNote(noteToUpdate) {}
 
 	// Function passed to NotePreview
@@ -210,6 +241,9 @@ export function NoteIndex() {
 
 	// console.log('render')
 	if (!notes) return <div className="no-notes-msg">Loading...</div>;
+	const pinnedNotes = notes.filter((note) => note.isPinned);
+	const otherNotes = notes.filter((note) => !note.isPinned);
+
 	console.log(notes);
 	return (
 		<section className="note-index-layout">
@@ -220,20 +254,49 @@ export function NoteIndex() {
 
 			<main className="main">
 				<AddNote onAddNote={onAddNote} />
-				<div className="notes-index">
-					{notes.map((note) => (
-						<NotePreview
-							key={note.id}
-							note={note}
-							onNoteClick={handleOpenModal}
-							onRemoveNote={onRemoveNote}
-							onArchiveNote={onArchiveNote}
-							Gmail={Gmail}
-							onCopyNote={onCopyNote}
-							onSetNoteStyle={onSetNoteStyle}
-						/>
-					))}
-				</div>
+				{pinnedNotes.length > 0 && (
+					<div>
+						<h4>pinned</h4>
+						<div className="pinned-notes notes-index">
+							{pinnedNotes.map((note) => (
+								<NotePreview
+									key={note.id}
+									note={note}
+									onNoteClick={handleOpenModal}
+									onRemoveNote={onRemoveNote}
+									onArchiveNote={onArchiveNote}
+									Gmail={Gmail}
+									onCopyNote={onCopyNote}
+									onSetNoteStyle={onSetNoteStyle}
+									onPinNote={onPinNote}
+									onRemoveTodo={onRemoveTodo}
+								/>
+							))}
+						</div>
+					</div>
+				)}
+
+				{otherNotes.length > 0 && (
+					<div>
+						{pinnedNotes.length > 0 && <h4>other</h4>}
+						<div className="notes-index">
+							{otherNotes.map((note) => (
+								<NotePreview
+									key={note.id}
+									note={note}
+									onNoteClick={handleOpenModal}
+									onRemoveNote={onRemoveNote}
+									onArchiveNote={onArchiveNote}
+									Gmail={Gmail}
+									onCopyNote={onCopyNote}
+									onSetNoteStyle={onSetNoteStyle}
+									onPinNote={onPinNote}
+									onRemoveTodo={onRemoveTodo}
+								/>
+							))}
+						</div>
+					</div>
+				)}
 			</main>
 
 			<Modal isOpen={isModalOpen} onClose={handleCloseModal}>
@@ -248,7 +311,11 @@ export function NoteIndex() {
 						)}
 
 						{selectedNote.type === 'NoteTodos' && (
-							<NoteTodos note={selectedNote} onRemoveNote={onRemoveNote} />
+							<NoteTodos
+								note={selectedNote}
+								onRemoveNote={onRemoveNote}
+								onRemoveTodo={onRemoveTodo}
+							/>
 						)}
 					</div>
 				)}

@@ -1,4 +1,4 @@
-export function NoteTodos({ note }) {
+export function NoteTodos({ note, onRemoveTodo }) {
 	return (
 		<div className="todos">
 			<h2>{note.info.title}</h2>
@@ -8,7 +8,10 @@ export function NoteTodos({ note }) {
 						{todo.txt}
 						<button
 							className="remove-task-btn "
-							onClick={() => onRemoveTodo(todo.id)}
+							onClick={(event) => {
+								event.stopPropagation();
+								onRemoveTodo(note.id, todo.id);
+							}}
 						>
 							✖️
 						</button>

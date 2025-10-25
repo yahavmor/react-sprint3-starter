@@ -24,10 +24,7 @@ export function NoteFolderList({ isOpen }) {
 							<i className="material-symbols-outlined"> emoji_objects</i>
 							Board
 						</Link>
-						<Link to="/note?status=pinned" className={getLinkClass('pinned')}>
-							<i className="material-symbols-outlined"> keep</i>
-							Pinned
-						</Link>
+
 						<Link to="/note?status=archive" className={getLinkClass('archive')}>
 							<i className="material-symbols-outlined"> archive</i>
 							Archive
