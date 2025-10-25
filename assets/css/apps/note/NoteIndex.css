@@ -106,3 +106,8 @@
 	font-size: 0.95rem;
 	margin: 0.5rem;
 }
+
+.main h4 {
+	color: #666;
+	text-transform: uppercase;
+}

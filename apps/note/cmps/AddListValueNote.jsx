@@ -4,7 +4,7 @@ import { NoteTodos } from './NoteTodos.jsx';
 const { useState, useEffect, useRef } = React;
 let taskCount = 0;
 
-export function AddListValueNote({ onSubmit, onRemoveTodo }) {
+export function AddListValueNote({ onSubmit }) {
 	const [toDo, setToDo] = useState([]);
 	const inputListValueNote = useRef(null);
 
@@ -24,13 +24,13 @@ export function AddListValueNote({ onSubmit, onRemoveTodo }) {
 	}
 
 	// dont know how to transfer it to the NoteTodos
-	function onRemoveTodo(toDoId) {
-		console.log('Removing note with id:', toDoId);
-		noteService.remove(toDoId).then(() => {
-			setToDo((toDo) => toDo.filter((toDo) => toDo.id !== toDoId));
-			showSuccessMsg('Note has been successfully removed!');
-		});
-	}
+	// function onRemoveTodo(toDoId) {
+	// 	console.log('Removing note with id:', toDoId);
+	// 	noteService.remove(toDoId).then(() => {
+	// 		setToDo((toDo) => toDo.filter((toDo) => toDo.id !== toDoId));
+	// 		showSuccessMsg('Note has been successfully removed!');
+	// 	});
+	// }
 
 	function add() {
 		onSubmit(toDo);
@@ -51,7 +51,7 @@ export function AddListValueNote({ onSubmit, onRemoveTodo }) {
 				+{' '}
 			</button> */}
 
-			<span class=" plus-btn " onClick={handleAddTasktoTodos}>
+			<span className=" plus-btn " onClick={handleAddTasktoTodos}>
 				add_circle
 			</span>
 		</div>

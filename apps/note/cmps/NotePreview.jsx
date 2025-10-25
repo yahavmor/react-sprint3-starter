@@ -16,7 +16,9 @@ export function NotePreview({
 	onArchiveNote,
 	onSetNoteStyle,
 	onCopyNote,
+	onPinNote,
 	Gmail,
+	onRemoveTodo,
 }) {
 	const [isColorOpen, setIsColorOpen] = useState(false);
 	let NoteComponent = cmpMap[note.type];
@@ -33,11 +35,15 @@ export function NotePreview({
 
 	return (
 		<div
-			className={`note-preview ${note.type}`}
+			className={`note-preview ${note.type} ${note.isPinned ? 'pinned' : ''}`}
 			style={note.style}
 			onClick={handleClick}
 		>
-			<NoteComponent note={note} onRemoveNote={onRemoveNote} />
+			<NoteComponent
+				note={note}
+				onRemoveNote={onRemoveNote}
+				onRemoveTodo={onRemoveTodo}
+			/>
 
 			<section className="action-icons flex">
 				<div
@@ -58,7 +64,6 @@ export function NotePreview({
 					)}
 				</div>
 
-				<div className="material-symbols-outlined">edit_square</div>
 				<div
 					className="material-symbols-outlined"
 					onClick={(event) => {
@@ -99,6 +104,16 @@ export function NotePreview({
 					delete
 				</div>
 			</section>
+
+			<div
+				className="pin material-symbols-outlined"
+				onClick={(event) => {
+					event.stopPropagation();
+					onPinNote(note);
+				}}
+			>
+				keep
+			</div>
 		</div>
 	);
 }
