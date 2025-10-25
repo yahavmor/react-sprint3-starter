@@ -23,21 +23,12 @@ export function AddListValueNote({ onSubmit }) {
 		}
 	}
 
-	// dont know how to transfer it to the NoteTodos
-	// function onRemoveTodo(toDoId) {
-	// 	console.log('Removing note with id:', toDoId);
-	// 	noteService.remove(toDoId).then(() => {
-	// 		setToDo((toDo) => toDo.filter((toDo) => toDo.id !== toDoId));
-	// 		showSuccessMsg('Note has been successfully removed!');
-	// 	});
-	// }
-
 	function add() {
 		onSubmit(toDo);
 	}
 
 	return (
-		<div>
+		<div className="flex">
 			<button className="add-note-btn" onClick={add}>
 				Add Note
 			</button>
