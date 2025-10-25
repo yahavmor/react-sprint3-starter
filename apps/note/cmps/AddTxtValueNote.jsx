@@ -11,7 +11,7 @@ export function AddTxtValueNote({ onSubmit, noteType }) {
 	}
 
 	return (
-		<div>
+		<div className="flex">
 			<button className="add-note-btn" onClick={add}>
 				Add Note
 			</button>
